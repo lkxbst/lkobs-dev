@@ -7,7 +7,7 @@
   data-theme-toggle
   aria-label="Alternar tema"
   aria-pressed="false"
-  class="inline-flex h-8 w-8 items-center justify-center rounded-full border border-border text-fg-muted transition-colors duration-150 hover:border-fg-muted hover:text-fg"
+  class="inline-flex h-11 w-11 items-center justify-center rounded-full border border-border text-fg-muted transition-colors duration-150 hover:border-fg-muted hover:text-fg sm:h-9 sm:w-9"
 >
   <svg
     data-icon-sun
@@ -72,15 +72,22 @@
       if (btn.hasAttribute('data-bound')) return;
       btn.setAttribute('data-bound', 'true');
       btn.addEventListener('click', () => {
-        const current = document.documentElement.getAttribute('data-theme') || 'dark';
+        const root = document.documentElement;
+        const current = root.getAttribute('data-theme') || 'dark';
         const next = current === 'dark' ? 'light' : 'dark';
-        document.documentElement.setAttribute('data-theme', next);
+        root.setAttribute('data-theme-transitioning', '');
+        root.setAttribute('data-theme', next);
         try {
           localStorage.setItem('theme', next);
         } catch {
           // ignore storage errors
         }
         syncThemeButtons();
+        window.requestAnimationFrame(() => {
+          window.requestAnimationFrame(() => {
+            root.removeAttribute('data-theme-transitioning');
+          });
+        });
       });
     });
   })();

@@ -1,0 +1,28 @@
+---
+import SectionLabel from './SectionLabel.astro';
+
+interface Props {
+  id: string;
+  headingId: string;
+  label: string;
+  class?: string;
+}
+
+const { id, headingId, label, class: className = 'py-16 lg:py-20' } = Astro.props;
+---
+
+<section
+  id={id}
+  aria-labelledby={headingId}
+  class:list={['scroll-mt-20 border-t border-border', className]}
+>
+  <div class="container-portfolio section-grid">
+    <div>
+      <SectionLabel id={headingId} label={label} />
+    </div>
+
+    <div>
+      <slot />
+    </div>
+  </div>
+</section>

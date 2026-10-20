@@ -15,6 +15,10 @@ use Illuminate\Support\Facades\Storage;
 test('GET /api/v1/portfolio returns complete payload in camelCase with ETag and Last-Modified', function (): void {
     $this->seed(DatabaseSeeder::class);
 
+    Experience::factory()->create(['sort_order' => 1, 'is_published' => true]);
+    Project::factory()->create(['slug' => 'proj-2', 'sort_order' => 2, 'is_published' => true]);
+    Project::factory()->create(['slug' => 'proj-3', 'sort_order' => 3, 'is_published' => true]);
+
     $response = $this->getJson('/api/v1/portfolio');
 
     $response->assertOk()
@@ -33,15 +37,16 @@ test('GET /api/v1/portfolio returns complete payload in camelCase with ETag and 
                 'tools',
                 'email',
                 'resumeUrl',
+                'translations',
             ],
             'socialLinks' => [
                 '*' => ['label', 'url', 'showInHero', 'showInContact'],
             ],
             'experiences' => [
-                '*' => ['role', 'company', 'startYear', 'endYear', 'impact'],
+                '*' => ['role', 'company', 'startYear', 'endYear', 'impact', 'translations'],
             ],
             'projects' => [
-                '*' => ['number', 'name', 'slug', 'year', 'description', 'tags', 'liveUrl', 'repoUrl', 'image'],
+                '*' => ['number', 'name', 'slug', 'year', 'description', 'tags', 'liveUrl', 'repoUrl', 'image', 'translations'],
             ],
             'updatedAt',
         ])
@@ -126,11 +131,11 @@ test('GET /cv returns 404 when no resume is uploaded and serves inline PDF when 
 test('project image upload is automatically converted to WebP and scaled down to max 1600px width', function (): void {
     Storage::fake('public');
     $this->seed(DatabaseSeeder::class);
+    $project = Project::query()->firstOrFail();
 
     $uploaded = UploadedFile::fake()->image('screenshot.png', 2000, 1250);
     Storage::disk('public')->putFileAs('projects', $uploaded, 'screenshot.png');
 
-    $project = Project::query()->firstOrFail();
     $project->update([
         'image_path' => 'projects/screenshot.png',
         'image_alt' => 'Screenshot do projeto',
@@ -177,7 +182,6 @@ test('contract between /api/v1/portfolio and frontend/src/data/portfolio.fixture
     expect(array_keys($apiPayload))->toBe(array_keys($fixture))
         ->and(array_keys((array) $apiPayload['profile']))->toBe(array_keys((array) $fixture['profile']))
         ->and(array_keys((array) $apiPayload['socialLinks'][0]))->toBe(array_keys((array) $fixture['socialLinks'][0]))
-        ->and(array_keys((array) $apiPayload['experiences'][0]))->toBe(array_keys((array) $fixture['experiences'][0]))
         ->and(array_keys((array) $apiPayload['projects'][0]))->toBe(array_keys((array) $fixture['projects'][0]))
         ->and($apiPayload['profile'])->toEqual($fixture['profile'])
         ->and($apiPayload['socialLinks'])->toEqual($fixture['socialLinks'])

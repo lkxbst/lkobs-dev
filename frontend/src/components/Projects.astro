@@ -1,8 +1,8 @@
 ---
-import SectionLabel from './SectionLabel.astro';
+import SectionGrid from './SectionGrid.astro';
 import ProjectCard from './ProjectCard.astro';
 import ExternalLink from './ExternalLink.astro';
-import { getUiStrings, type Locale } from '../lib/i18n';
+import { getUiStrings, isFilledText, type Locale } from '../lib/i18n';
 import type { Project, SocialLink } from '../lib/schema';
 
 interface Props {
@@ -13,33 +13,26 @@ interface Props {
 
 const { projects, socialLinks, locale = 'pt' } = Astro.props;
 const ui = getUiStrings(locale);
+const validProjects = projects.filter(
+  (proj) => isFilledText(proj.name) && isFilledText(proj.description),
+);
 const githubLink =
   socialLinks.find((link) => link.label.toLowerCase().includes('github'))?.url ??
   'https://github.com/lkxbst';
 ---
 
-<section
-  id="projetos"
-  aria-labelledby="heading-projetos"
-  class="scroll-mt-20 border-t border-border py-16 lg:py-20"
->
-  <div class="container-portfolio grid grid-cols-1 gap-8 lg:grid-cols-[208px_1fr] lg:gap-0">
-    <div>
-      <SectionLabel id="heading-projetos" label={ui.projects.label} />
-    </div>
-
-    <div>
+{
+  validProjects.length > 0 && (
+    <SectionGrid id="projetos" headingId="heading-projetos" label={ui.projects.label}>
       <div class="divide-y divide-border">
-        {
-          projects.map((project, index) => (
-            <ProjectCard project={project} isFirst={index === 0} locale={locale} />
-          ))
-        }
+        {validProjects.map((project, index) => (
+          <ProjectCard project={project} isFirst={index === 0} locale={locale} />
+        ))}
       </div>
 
       <div class="mt-2 border-t border-border pt-8 text-[14px]">
         <ExternalLink href={githubLink}>{ui.projects.moreOnGithub}</ExternalLink>
       </div>
-    </div>
-  </div>
-</section>
+    </SectionGrid>
+  )
+}

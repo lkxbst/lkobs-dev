@@ -1,4 +1,4 @@
-import fixtureData from '../data/portfolio.fixture.json';
+import { buildPayloadFromContent, portfolioContent } from '../data/content';
 import { PortfolioPayloadSchema, type PortfolioPayload } from './schema';
 
 export async function getPortfolioData(): Promise<PortfolioPayload> {
@@ -6,7 +6,7 @@ export async function getPortfolioData(): Promise<PortfolioPayload> {
   const useFixture = useFixtureEnv === 'true' || useFixtureEnv === '1';
 
   if (useFixture) {
-    return PortfolioPayloadSchema.parse(fixtureData);
+    return PortfolioPayloadSchema.parse(buildPayloadFromContent(portfolioContent));
   }
 
   const baseUrl = (

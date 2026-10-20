@@ -4,23 +4,27 @@
 
 :root,
 :root[data-theme='dark'] {
-  --bg: #0f0f0d;
-  --surface: #181816;
-  --border: #242422;
-  --fg: #edeee9;
-  --fg-muted: #9a9b96;
-  --accent: #ff6d39;
+  --bg: #1a1917;
+  --surface: #22211e;
+  --fg: #e9e5dd;
+  --muted: #a29d93;
+  --fg-muted: var(--muted);
+  --line: #302e2a;
+  --border: var(--line);
+  --accent: #e8774a;
   --link-underline: color-mix(in srgb, var(--fg-muted) 40%, transparent);
   color-scheme: dark;
 }
 
 :root[data-theme='light'] {
-  --bg: #f6f6f3;
-  --surface: #ecece8;
-  --border: #dfdfda;
-  --fg: #121210;
-  --fg-muted: #5e5f5a;
-  --accent: #e2531f;
+  --bg: #f2efe8;
+  --surface: #e8e4da;
+  --fg: #1f1d1a;
+  --muted: #6a655c;
+  --fg-muted: var(--muted);
+  --line: #dad5ca;
+  --border: var(--line);
+  --accent: #ac451e;
   --link-underline: color-mix(in srgb, var(--fg-muted) 40%, transparent);
   color-scheme: light;
 }
@@ -33,8 +37,10 @@
   --color-bg: var(--bg);
   --color-surface: var(--surface);
   --color-border: var(--border);
+  --color-line: var(--line);
   --color-fg: var(--fg);
   --color-fg-muted: var(--fg-muted);
+  --color-muted: var(--muted);
   --color-accent: var(--accent);
 }
 
@@ -53,6 +59,17 @@ body {
   color: var(--fg);
   min-height: 100vh;
   overflow-x: hidden;
+}
+
+::selection {
+  background-color: color-mix(in srgb, var(--accent) 25%, transparent);
+  color: var(--fg);
+}
+
+:root[data-theme-transitioning] *,
+:root[data-theme-transitioning] *::before,
+:root[data-theme-transitioning] *::after {
+  transition: none !important;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -94,6 +111,20 @@ body {
   }
 }
 
+.section-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  row-gap: 2rem;
+}
+
+@media (min-width: 1024px) {
+  .section-grid {
+    grid-template-columns: 208px minmax(0, 1fr);
+    column-gap: 0;
+    row-gap: 0;
+  }
+}
+
 .portfolio-link {
   color: var(--fg-muted);
   text-decoration: underline;
@@ -113,9 +144,9 @@ body {
   background-color: var(--surface);
   background-image: repeating-linear-gradient(
     45deg,
-    transparent,
-    transparent 10px,
-    color-mix(in srgb, var(--border) 55%, transparent) 10px,
-    color-mix(in srgb, var(--border) 55%, transparent) 11px
+    var(--surface),
+    var(--surface) 10px,
+    var(--bg) 10px,
+    var(--bg) 11px
   );
 }

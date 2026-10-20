@@ -30,17 +30,17 @@ export const ProjectTranslationSchema = z
 export const ProfileSchema = z.object({
   name: z.string().min(1),
   handle: z.string().min(1),
-  city: z.string().min(1),
-  headline: z.string().min(1),
-  headlineHighlight: z.string().min(1),
+  city: z.string(),
+  headline: z.string(),
+  headlineHighlight: z.string(),
   isAvailable: z.boolean(),
-  availabilityLabel: z.string().min(1),
+  availabilityLabel: z.string(),
   about: z.object({
-    primary: z.string().min(1),
-    secondary: z.string().min(1),
+    primary: z.string(),
+    secondary: z.string(),
   }),
-  tools: z.array(z.string().min(1)),
-  email: z.string().min(1),
+  tools: z.array(z.string()),
+  email: z.string(),
   resumeUrl: z.string().url().nullable(),
   translations: z
     .object({
@@ -58,11 +58,11 @@ export const SocialLinkSchema = z.object({
 });
 
 export const ExperienceSchema = z.object({
-  role: z.string().min(1),
-  company: z.string().min(1),
+  role: z.string(),
+  company: z.string(),
   startYear: z.number().int().min(1900).max(2100),
   endYear: z.number().int().min(1900).max(2100).nullable(),
-  impact: z.string().min(1),
+  impact: z.string(),
   translations: z
     .object({
       en: ExperienceTranslationSchema.optional(),
@@ -73,18 +73,18 @@ export const ExperienceSchema = z.object({
 
 export const ProjectImageSchema = z.object({
   url: z.string().url(),
-  alt: z.string().min(1),
+  alt: z.string(),
   width: z.number().int().positive(),
   height: z.number().int().positive(),
 });
 
 export const ProjectSchema = z.object({
   number: z.string().regex(/^\d{2,}$/),
-  name: z.string().min(1),
-  slug: z.string().min(1),
+  name: z.string(),
+  slug: z.string(),
   year: z.number().int().min(1900).max(2100),
-  description: z.string().min(1),
-  tags: z.array(z.string().min(1)),
+  description: z.string(),
+  tags: z.array(z.string()),
   liveUrl: z.string().url().nullable(),
   repoUrl: z.string().url().nullable(),
   image: ProjectImageSchema.nullable(),

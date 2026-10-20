@@ -2,39 +2,41 @@
     "profile": {
         "name": "Luan Kobs",
         "handle": "luan.kobs",
-        "city": "[sua cidade]",
-        "headline": "Desenvolvedor de software em [sua cidade]. Construo produtos web de ponta a ponta, do banco de dados à interface, com código simples e decisões bem explicadas.",
+        "city": "",
+        "headline": "Desenvolvedor de software. Construo produtos web de ponta a ponta, do banco de dados à interface, com código simples e decisões bem explicadas.",
         "headlineHighlight": "código simples e decisões bem explicadas.",
         "isAvailable": true,
         "availabilityLabel": "Disponível para novos projetos",
         "about": {
-            "primary": "Sou desenvolvedor há [X] anos e trabalho no meio do caminho entre produto e engenharia: entender o problema do negócio, propor a solução mais eficiente que resolva e cuidar de cada detalhe na entrega.",
+            "primary": "Trabalho no meio do caminho entre produto e engenharia: entender o problema do negócio, propor a solução mais eficiente que resolva e cuidar de cada detalhe na entrega.",
             "secondary": "Desenvolvo sistemas sob medida, plataformas SaaS, automações inteligentes e integrações com IA para empresas que precisam ganhar escala, velocidade e eficiência operacional."
         },
         "tools": [
+            "PHP",
+            "Laravel",
             "TypeScript",
             "React",
             "Node.js",
             "PostgreSQL",
             "Docker"
         ],
-        "email": "[seu@email.com]",
+        "email": "",
         "resumeUrl": null,
         "translations": {
             "en": {
-                "city": "[your city]",
-                "headline": "Software developer based in [your city]. I build end-to-end web products, from database to interface, with clean code and well-explained decisions.",
+                "city": "",
+                "headline": "Software developer. I build end-to-end web products, from database to interface, with clean code and well-explained decisions.",
                 "headlineHighlight": "clean code and well-explained decisions.",
                 "availabilityLabel": "Available for new projects",
-                "aboutPrimary": "I have been a developer for [X] years, working at the intersection of product and engineering: understanding the business problem, proposing the leanest solution that works, and caring for every delivery detail.",
+                "aboutPrimary": "I work at the intersection of product and engineering: understanding the business problem, proposing the leanest solution that works, and caring for every delivery detail.",
                 "aboutSecondary": "I build custom software, SaaS platforms, intelligent automations, and AI integrations for companies looking to gain scale, speed, and operational efficiency."
             },
             "es": {
-                "city": "[tu ciudad]",
-                "headline": "Desarrollador de software en [tu ciudad]. Construyo productos web de extremo a extremo, desde la base de datos hasta la interfaz, con código simple y decisiones claras.",
+                "city": "",
+                "headline": "Desarrollador de software. Construyo productos web de extremo a extremo, desde la base de datos hasta la interfaz, con código simple y decisiones claras.",
                 "headlineHighlight": "código simple y decisiones claras.",
                 "availabilityLabel": "Disponible para nuevos proyectos",
-                "aboutPrimary": "Soy desarrollador desde hace [X] años y trabajo entre producto e ingeniería: entender el problema del negocio, proponer la solución más eficiente y cuidar cada detalle en la entrega.",
+                "aboutPrimary": "Trabajo entre producto e ingeniería: entender el problema del negocio, proponer la solución más eficiente y cuidar cada detalle en la entrega.",
                 "aboutSecondary": "Desarrollo sistemas a medida, plataformas SaaS, automatizaciones inteligentes e integraciones con IA para empresas que necesitan ganar escala, velocidad y eficiencia operativa."
             }
         }
@@ -59,139 +61,35 @@
             "showInContact": true
         }
     ],
-    "experiences": [
-        {
-            "role": "[Cargo]",
-            "company": "[Empresa]",
-            "startYear": 2023,
-            "endYear": null,
-            "impact": "[Uma linha sobre o impacto: o que você construiu, melhorou ou liderou.]",
-            "translations": {
-                "en": {
-                    "role": "[Role]",
-                    "company": "[Company]",
-                    "impact": "[One line about the impact: what you built, improved, or led.]"
-                },
-                "es": {
-                    "role": "[Cargo]",
-                    "company": "[Empresa]",
-                    "impact": "[Una línea sobre el impacto: lo que construiste, mejoraste o lideraste.]"
-                }
-            }
-        },
-        {
-            "role": "[Cargo]",
-            "company": "[Empresa]",
-            "startYear": 2021,
-            "endYear": 2023,
-            "impact": "[Uma linha sobre o impacto: o que você construiu, melhorou ou liderou.]",
-            "translations": {
-                "en": {
-                    "role": "[Role]",
-                    "company": "[Company]",
-                    "impact": "[One line about the impact: what you built, improved, or led.]"
-                },
-                "es": {
-                    "role": "[Cargo]",
-                    "company": "[Empresa]",
-                    "impact": "[Una línea sobre el impacto: lo que construiste, mejoraste o lideraste.]"
-                }
-            }
-        },
-        {
-            "role": "[Cargo]",
-            "company": "[Empresa]",
-            "startYear": 2019,
-            "endYear": 2021,
-            "impact": "[Uma linha sobre o impacto: o que você construiu, melhorou ou liderou.]",
-            "translations": {
-                "en": {
-                    "role": "[Role]",
-                    "company": "[Company]",
-                    "impact": "[One line about the impact: what you built, improved, or led.]"
-                },
-                "es": {
-                    "role": "[Cargo]",
-                    "company": "[Empresa]",
-                    "impact": "[Una línea sobre el impacto: lo que construiste, mejoraste o lideraste.]"
-                }
-            }
-        }
-    ],
+    "experiences": [],
     "projects": [
         {
             "number": "01",
-            "name": "[Nome do projeto]",
-            "slug": "projeto-01",
-            "year": 2025,
-            "description": "[O problema que ele resolve e o que você construiu, em duas frases. Se tiver um resultado concreto, cite aqui.]",
+            "name": "lkobs.dev — Portfólio & Headless CMS",
+            "slug": "lkobs-dev",
+            "year": 2026,
+            "description": "Plataforma de portfólio multilíngue (PT/EN/ES) com painel administrativo em Laravel 12 + Filament 4 e frontend estático em Astro 5 com nota máxima no Lighthouse.",
             "tags": [
-                "[React]",
-                "[Node.js]",
-                "[PostgreSQL]"
+                "Laravel 12",
+                "Filament 4",
+                "Astro 5",
+                "TypeScript",
+                "Tailwind CSS"
             ],
-            "liveUrl": "https://example.com/projeto-01",
-            "repoUrl": "https://github.com/luankobs/projeto-01",
+            "liveUrl": "https://lkobs-dev.pages.dev",
+            "repoUrl": "https://github.com/lkxbst/lkobs-dev",
             "image": null,
             "translations": {
                 "en": {
-                    "name": "[Project name]",
-                    "description": "[The problem it solves and what you built, in two sentences. Mention concrete results if available.]"
+                    "name": "lkobs.dev — Portfolio & Headless CMS",
+                    "description": "Multilingual portfolio platform (PT/EN/ES) powered by a Laravel 12 + Filament 4 admin panel and an Astro 5 static frontend achieving 100/100 Lighthouse scores."
                 },
                 "es": {
-                    "name": "[Nombre del proyecto]",
-                    "description": "[El problema que resuelve y lo que construiste, en dos frases. Si tienes un resultado concreto, menciónalo aquí.]"
-                }
-            }
-        },
-        {
-            "number": "02",
-            "name": "[Nome do projeto]",
-            "slug": "projeto-02",
-            "year": 2024,
-            "description": "[Contexto: para quem foi feito, qual era a restrição e qual decisão técnica você tomou para resolver.]",
-            "tags": [
-                "[Next.js]",
-                "[TypeScript]"
-            ],
-            "liveUrl": "https://example.com/projeto-02",
-            "repoUrl": "https://github.com/luankobs/projeto-02",
-            "image": null,
-            "translations": {
-                "en": {
-                    "name": "[Project name]",
-                    "description": "[Context: who it was built for, what the constraint was, and the technical decision you made to solve it.]"
-                },
-                "es": {
-                    "name": "[Nombre del proyecto]",
-                    "description": "[Contexto: para quién fue hecho, cuál era la restricción y qué decisión técnica tomaste para resolverlo.]"
-                }
-            }
-        },
-        {
-            "number": "03",
-            "name": "[Nome do projeto]",
-            "slug": "projeto-03",
-            "year": 2023,
-            "description": "[Um projeto pessoal ou open source que mostre algo que você gosta de fazer. Uma frase sobre o porquê.]",
-            "tags": [
-                "[Go]",
-                "[CLI]"
-            ],
-            "liveUrl": null,
-            "repoUrl": "https://github.com/luankobs/projeto-03",
-            "image": null,
-            "translations": {
-                "en": {
-                    "name": "[Project name]",
-                    "description": "[A personal or open-source project showcasing something you enjoy building. One sentence on why.]"
-                },
-                "es": {
-                    "name": "[Nombre del proyecto]",
-                    "description": "[Un proyecto personal u open source que muestre algo que te gusta construir. Una frase sobre el porqué.]"
+                    "name": "lkobs.dev — Portafolio & Headless CMS",
+                    "description": "Plataforma de portafolio multilingüe (PT/EN/ES) con panel administrativo en Laravel 12 + Filament 4 y frontend estático en Astro 5 con puntuación 100/100 en Lighthouse."
                 }
             }
         }
     ],
-    "updatedAt": "2026-10-20T01:52:43+00:00"
+    "updatedAt": "2026-10-20T02:47:50+00:00"
 }

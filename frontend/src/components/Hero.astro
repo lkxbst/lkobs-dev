@@ -1,7 +1,7 @@
 ---
 import ExternalLink from './ExternalLink.astro';
 import { splitHeadline } from '../lib/format';
-import { getUiStrings, type Locale } from '../lib/i18n';
+import { getUiStrings, isFilledText, type Locale } from '../lib/i18n';
 import type { Profile, SocialLink } from '../lib/schema';
 
 interface Props {
@@ -12,15 +12,14 @@ interface Props {
 
 const { profile, socialLinks, locale = 'pt' } = Astro.props;
 const ui = getUiStrings(locale);
-const heroLinks = socialLinks.filter((link) => link.showInHero);
+const heroLinks = socialLinks.filter((link) => link.showInHero && isFilledText(link.url));
 const { before, highlight, after } = splitHeadline(profile.headline, profile.headlineHighlight);
-const resumeHref = profile.resumeUrl ?? '/cv';
 ---
 
 <section aria-label={ui.hero.ariaLabel} class="pt-24 pb-20 lg:pt-40 lg:pb-36">
   <div class="container-portfolio">
     {
-      profile.isAvailable && (
+      profile.isAvailable && isFilledText(profile.availabilityLabel) && (
         <div class="mb-6 flex items-center gap-2.5 font-mono text-[12px] text-fg-muted">
           <span
             aria-hidden="true"
@@ -35,25 +34,26 @@ const resumeHref = profile.resumeUrl ?? '/cv';
       {profile.name}
     </h1>
 
-    <p
-      class="mt-8 max-w-[730px] text-[clamp(1.25rem,2.2vw,1.75rem)] leading-[1.4] font-normal text-fg-muted"
-    >
-      {before}
-      {highlight && <span class="text-fg">{highlight}</span>}
-      {after}
-    </p>
+    {
+      isFilledText(profile.headline) && (
+        <p class="mt-8 max-w-[730px] text-[clamp(1.25rem,2.2vw,1.75rem)] leading-[1.4] font-normal text-fg-muted">
+          {before}
+          {highlight && <span class="text-fg">{highlight}</span>}
+          {after}
+        </p>
+      )
+    }
 
-    <ul class="mt-10 flex flex-wrap items-center gap-7 text-[14px]">
-      {
-        heroLinks.map((link) => (
-          <li>
-            <ExternalLink href={link.url}>{link.label}</ExternalLink>
-          </li>
-        ))
-      }
-      <li>
-        <ExternalLink href={resumeHref}>{ui.hero.resumePdf}</ExternalLink>
-      </li>
-    </ul>
+    {
+      heroLinks.length > 0 && (
+        <ul class="mt-10 flex flex-wrap items-center gap-7 text-[14px]">
+          {heroLinks.map((link) => (
+            <li>
+              <ExternalLink href={link.url}>{link.label}</ExternalLink>
+            </li>
+          ))}
+        </ul>
+      )
+    }
   </div>
 </section>

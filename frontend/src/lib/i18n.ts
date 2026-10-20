@@ -2,10 +2,16 @@ import type { PortfolioPayload } from './schema';
 
 export type Locale = 'pt' | 'en' | 'es';
 
-export const LOCALES: readonly { code: Locale; label: string; href: string; hreflang: string }[] = [
-  { code: 'pt', label: 'PT', href: '/', hreflang: 'pt-BR' },
-  { code: 'en', label: 'EN', href: '/en/', hreflang: 'en' },
-  { code: 'es', label: 'ES', href: '/es/', hreflang: 'es' },
+export const LOCALES: readonly {
+  code: Locale;
+  label: string;
+  fullName: string;
+  href: string;
+  hreflang: string;
+}[] = [
+  { code: 'pt', label: 'PT', fullName: 'Português', href: '/', hreflang: 'pt-BR' },
+  { code: 'en', label: 'EN', fullName: 'English', href: '/en/', hreflang: 'en' },
+  { code: 'es', label: 'ES', fullName: 'Español', href: '/es/', hreflang: 'es' },
 ];
 
 export interface UiStrings {
@@ -196,55 +202,88 @@ export function getUiStrings(locale: Locale = 'pt'): UiStrings {
   return UI_DICTIONARY[locale];
 }
 
-function nonEmpty(value: string | null | undefined, fallback: string): string {
-  return value && value.trim().length > 0 ? value : fallback;
+export function isFilledText(value: string | null | undefined): boolean {
+  if (!value) return false;
+  const trimmed = value.trim();
+  if (trimmed.length === 0) return false;
+  // Treat pure bracketed placeholders like "[Cargo]" or "[seu@email.com]" as empty
+  if (/^\[.*\]$/.test(trimmed)) return false;
+  return true;
+}
+
+function cleanText(value: string | null | undefined): string {
+  return isFilledText(value) ? (value as string).trim() : '';
+}
+
+function pickLocalized(
+  translated: string | null | undefined,
+  fallback: string | null | undefined,
+): string {
+  if (isFilledText(translated)) {
+    return (translated as string).trim();
+  }
+  return cleanText(fallback);
 }
 
 export function localizePortfolio(
   payload: PortfolioPayload,
   locale: Locale = 'pt',
 ): PortfolioPayload {
-  if (locale === 'pt') {
-    return payload;
-  }
+  const profileTrans = locale === 'pt' ? undefined : payload.profile.translations?.[locale];
 
-  const profileTrans = payload.profile.translations?.[locale];
   const localizedProfile = {
     ...payload.profile,
-    city: nonEmpty(profileTrans?.city, payload.profile.city),
-    headline: nonEmpty(profileTrans?.headline, payload.profile.headline),
-    headlineHighlight: nonEmpty(profileTrans?.headlineHighlight, payload.profile.headlineHighlight),
-    availabilityLabel: nonEmpty(profileTrans?.availabilityLabel, payload.profile.availabilityLabel),
+    city: pickLocalized(profileTrans?.city, payload.profile.city),
+    headline: pickLocalized(profileTrans?.headline, payload.profile.headline),
+    headlineHighlight: pickLocalized(
+      profileTrans?.headlineHighlight,
+      payload.profile.headlineHighlight,
+    ),
+    availabilityLabel: pickLocalized(
+      profileTrans?.availabilityLabel,
+      payload.profile.availabilityLabel,
+    ),
     about: {
-      primary: nonEmpty(profileTrans?.aboutPrimary, payload.profile.about.primary),
-      secondary: nonEmpty(profileTrans?.aboutSecondary, payload.profile.about.secondary),
+      primary: pickLocalized(profileTrans?.aboutPrimary, payload.profile.about.primary),
+      secondary: pickLocalized(profileTrans?.aboutSecondary, payload.profile.about.secondary),
     },
+    tools: payload.profile.tools.filter((tool) => isFilledText(tool)),
+    email: cleanText(payload.profile.email),
   };
 
-  const localizedExperiences = payload.experiences.map((exp) => {
-    const expTrans = exp.translations?.[locale];
-    return {
-      ...exp,
-      role: nonEmpty(expTrans?.role, exp.role),
-      company: nonEmpty(expTrans?.company, exp.company),
-      impact: nonEmpty(expTrans?.impact, exp.impact),
-    };
-  });
+  const localizedExperiences = payload.experiences
+    .map((exp) => {
+      const expTrans = locale === 'pt' ? undefined : exp.translations?.[locale];
+      return {
+        ...exp,
+        role: pickLocalized(expTrans?.role, exp.role),
+        company: pickLocalized(expTrans?.company, exp.company),
+        impact: pickLocalized(expTrans?.impact, exp.impact),
+      };
+    })
+    .filter((exp) => isFilledText(exp.role) && isFilledText(exp.company));
 
-  const localizedProjects = payload.projects.map((proj) => {
-    const projTrans = proj.translations?.[locale];
-    return {
+  const localizedProjects = payload.projects
+    .map((proj) => {
+      const projTrans = locale === 'pt' ? undefined : proj.translations?.[locale];
+      return {
+        ...proj,
+        name: pickLocalized(projTrans?.name, proj.name),
+        description: pickLocalized(projTrans?.description, proj.description),
+        tags: proj.tags.filter((tag) => isFilledText(tag)),
+        image: proj.image
+          ? {
+              ...proj.image,
+              alt: pickLocalized(projTrans?.imageAlt, proj.image.alt),
+            }
+          : null,
+      };
+    })
+    .filter((proj) => isFilledText(proj.name) && isFilledText(proj.description))
+    .map((proj, index) => ({
       ...proj,
-      name: nonEmpty(projTrans?.name, proj.name),
-      description: nonEmpty(projTrans?.description, proj.description),
-      image: proj.image
-        ? {
-            ...proj.image,
-            alt: nonEmpty(projTrans?.imageAlt, proj.image.alt),
-          }
-        : null,
-    };
-  });
+      number: String(index + 1).padStart(2, '0'),
+    }));
 
   return {
     ...payload,

@@ -1,8 +1,8 @@
 ---
-import SectionLabel from './SectionLabel.astro';
+import SectionGrid from './SectionGrid.astro';
 import ExternalLink from './ExternalLink.astro';
 import { formatExperiencePeriod } from '../lib/format';
-import { getUiStrings, type Locale } from '../lib/i18n';
+import { getUiStrings, isFilledText, type Locale } from '../lib/i18n';
 import type { Experience as ExperienceItem, Profile } from '../lib/schema';
 
 interface Props {
@@ -13,47 +13,44 @@ interface Props {
 
 const { experiences, profile, locale = 'pt' } = Astro.props;
 const ui = getUiStrings(locale);
-const resumeHref = profile.resumeUrl ?? '/cv';
+const validExperiences = experiences.filter(
+  (exp) => isFilledText(exp.role) && isFilledText(exp.company),
+);
+const hasResume = isFilledText(profile.resumeUrl);
 ---
 
-<section
-  id="experiencia"
-  aria-labelledby="heading-experiencia"
-  class="scroll-mt-20 border-t border-border py-16 lg:py-20"
->
-  <div class="container-portfolio grid grid-cols-1 gap-8 lg:grid-cols-[208px_1fr] lg:gap-0">
-    <div>
-      <SectionLabel id="heading-experiencia" label={ui.experience.label} />
-    </div>
-
-    <div>
+{
+  validExperiences.length > 0 && (
+    <SectionGrid id="experiencia" headingId="heading-experiencia" label={ui.experience.label}>
       <div class="divide-y divide-border">
-        {
-          experiences.map((exp, index) => (
-            <article
-              class:list={[
-                'grid grid-cols-1 gap-2 sm:grid-cols-[168px_1fr] sm:gap-0',
-                index === 0 ? 'pb-8' : 'py-8',
-              ]}
-            >
-              <div class="font-mono text-[13px] leading-[1.6] text-fg-muted">
-                [{formatExperiencePeriod(exp.startYear, exp.endYear, ui.experience.presentLabel)}]
-              </div>
+        {validExperiences.map((exp, index) => (
+          <article
+            class:list={[
+              'grid grid-cols-1 gap-2 sm:grid-cols-[168px_1fr] sm:gap-0',
+              index === 0 ? 'pb-8' : 'py-8',
+            ]}
+          >
+            <div class="font-mono text-[13px] leading-[1.6] text-fg-muted">
+              [{formatExperiencePeriod(exp.startYear, exp.endYear, ui.experience.presentLabel)}]
+            </div>
 
-              <div>
-                <h3 class="text-[17px] leading-snug font-medium text-fg">
-                  {exp.role} <span class="font-normal text-fg-muted">· {exp.company}</span>
-                </h3>
+            <div>
+              <h3 class="text-[17px] leading-snug font-medium text-fg">
+                {exp.role} <span class="font-normal text-fg-muted">· {exp.company}</span>
+              </h3>
+              {isFilledText(exp.impact) && (
                 <p class="mt-2 text-[15px] leading-[1.6] text-fg-muted">{exp.impact}</p>
-              </div>
-            </article>
-          ))
-        }
+              )}
+            </div>
+          </article>
+        ))}
       </div>
 
-      <div class="mt-6 border-t border-border pt-8 text-[14px]">
-        <ExternalLink href={resumeHref}>{ui.experience.fullResumePdf}</ExternalLink>
-      </div>
-    </div>
-  </div>
-</section>
+      {hasResume && profile.resumeUrl && (
+        <div class="mt-6 border-t border-border pt-8 text-[14px]">
+          <ExternalLink href={profile.resumeUrl}>{ui.experience.fullResumePdf}</ExternalLink>
+        </div>
+      )}
+    </SectionGrid>
+  )
+}

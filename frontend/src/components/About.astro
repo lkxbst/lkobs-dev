@@ -1,6 +1,6 @@
 ---
-import SectionLabel from './SectionLabel.astro';
-import { getUiStrings, type Locale } from '../lib/i18n';
+import SectionGrid from './SectionGrid.astro';
+import { getUiStrings, isFilledText, type Locale } from '../lib/i18n';
 import type { Profile } from '../lib/schema';
 
 interface Props {
@@ -10,35 +10,32 @@ interface Props {
 
 const { profile, locale = 'pt' } = Astro.props;
 const ui = getUiStrings(locale);
+
+const hasPrimary = isFilledText(profile.about.primary);
+const hasSecondary = isFilledText(profile.about.secondary);
+const tools = profile.tools.filter((tool) => isFilledText(tool));
+const hasContent = hasPrimary || hasSecondary || tools.length > 0;
 ---
 
-<section
-  id="sobre"
-  aria-labelledby="heading-sobre"
-  class="scroll-mt-20 border-t border-border py-16 lg:py-20"
->
-  <div class="container-portfolio grid grid-cols-1 gap-8 lg:grid-cols-[420px_1fr] lg:gap-0">
-    <div>
-      <SectionLabel id="heading-sobre" label={ui.about.label} />
-    </div>
+{
+  hasContent && (
+    <SectionGrid id="sobre" headingId="heading-sobre" label={ui.about.label}>
+      <div class="max-w-[700px]">
+        {hasPrimary && <p class="text-[18px] leading-[1.6] text-fg">{profile.about.primary}</p>}
 
-    <div>
-      <p class="text-[18px] leading-[1.6] text-fg">
-        {profile.about.primary}
-      </p>
+        {hasSecondary && (
+          <p class:list={['text-[18px] leading-[1.6] text-fg-muted', hasPrimary && 'mt-6']}>
+            {profile.about.secondary}
+          </p>
+        )}
 
-      <p class="mt-6 text-[18px] leading-[1.6] text-fg-muted">
-        {profile.about.secondary}
-      </p>
-
-      <div
-        class="mt-10 flex flex-col gap-3 border-t border-border pt-6 sm:flex-row sm:items-baseline sm:gap-8"
-      >
-        <span class="font-mono text-[12px] text-fg-muted">{ui.about.toolsLabel}</span>
-        <p class="font-mono text-[13px] leading-relaxed text-fg">
-          {profile.tools.join(' · ')}
-        </p>
+        {tools.length > 0 && (
+          <div class="mt-10 flex flex-col gap-3 border-t border-border pt-6 sm:flex-row sm:items-baseline sm:gap-8">
+            <span class="font-mono text-[12px] text-fg-muted">{ui.about.toolsLabel}</span>
+            <p class="font-mono text-[13px] leading-relaxed text-fg">{tools.join(' · ')}</p>
+          </div>
+        )}
       </div>
-    </div>
-  </div>
-</section>
+    </SectionGrid>
+  )
+}

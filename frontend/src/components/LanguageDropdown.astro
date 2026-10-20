@@ -1,0 +1,182 @@
+---
+import { getUiStrings, LOCALES, type Locale } from '../lib/i18n';
+
+interface Props {
+  locale?: Locale;
+}
+
+const { locale = 'pt' } = Astro.props;
+const ui = getUiStrings(locale);
+const currentLocale = LOCALES.find((loc) => loc.code === locale) ?? LOCALES[0];
+---
+
+<div class="relative hidden sm:block" data-lang-dropdown>
+  <button
+    type="button"
+    data-lang-dropdown-button
+    aria-haspopup="listbox"
+    aria-expanded="false"
+    aria-controls="lang-dropdown-listbox"
+    class="inline-flex min-h-8 items-center gap-1.5 rounded px-2 font-mono text-[12px] font-medium text-fg transition-colors duration-150 hover:text-fg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+  >
+    <span class="sr-only">{ui.langSwitcherAriaLabel}: </span>
+    <span class="underline decoration-accent decoration-2 underline-offset-4">
+      {currentLocale.label}
+    </span>
+    <span aria-hidden="true" class="text-[10px] leading-none text-fg-muted">▾</span>
+  </button>
+
+  <ul
+    id="lang-dropdown-listbox"
+    role="listbox"
+    aria-label={ui.langSwitcherAriaLabel}
+    data-lang-dropdown-list
+    hidden
+    class="absolute right-0 top-full z-50 mt-1.5 min-w-[92px] rounded-md border border-border bg-bg p-1 shadow-lg"
+  >
+    {
+      LOCALES.map((loc) => {
+        const isActive = loc.code === locale;
+        return (
+          <li
+            role="option"
+            tabindex="-1"
+            aria-selected={isActive ? 'true' : 'false'}
+            data-lang-option={loc.code}
+            data-href={loc.href}
+            class:list={[
+              'flex min-h-8 cursor-pointer items-center justify-between gap-2 rounded px-2.5 py-1 font-mono text-[12px] transition-colors duration-150 hover:bg-surface focus-visible:bg-surface focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent',
+              isActive
+                ? 'font-medium text-fg underline decoration-accent decoration-2 underline-offset-4'
+                : 'text-fg-muted hover:text-fg',
+            ]}
+          >
+            <span>{loc.label}</span>
+            {isActive && <span aria-hidden="true" class="h-1.5 w-1.5 rounded-full bg-accent" />}
+          </li>
+        );
+      })
+    }
+  </ul>
+</div>
+
+<script is:inline>
+  (() => {
+    const container = document.querySelector('[data-lang-dropdown]');
+    if (!container || container.hasAttribute('data-bound')) return;
+    container.setAttribute('data-bound', 'true');
+
+    const button = container.querySelector('[data-lang-dropdown-button]');
+    const list = container.querySelector('[data-lang-dropdown-list]');
+    const options = Array.from(container.querySelectorAll('[data-lang-option]'));
+    if (!button || !list || !options.length) return;
+
+    const isOpen = () => button.getAttribute('aria-expanded') === 'true';
+
+    const closeDropdown = (restoreFocus = false) => {
+      button.setAttribute('aria-expanded', 'false');
+      list.setAttribute('hidden', '');
+      if (restoreFocus && button instanceof HTMLElement) {
+        button.focus();
+      }
+    };
+
+    const focusOption = (index) => {
+      const target = options[(index + options.length) % options.length];
+      if (target instanceof HTMLElement) {
+        target.focus();
+      }
+    };
+
+    const openDropdown = (initialFocus = 'selected') => {
+      button.setAttribute('aria-expanded', 'true');
+      list.removeAttribute('hidden');
+      const selectedIndex = options.findIndex(
+        (opt) => opt.getAttribute('aria-selected') === 'true',
+      );
+      if (initialFocus === 'first') {
+        focusOption(0);
+      } else if (initialFocus === 'last') {
+        focusOption(options.length - 1);
+      } else {
+        focusOption(selectedIndex >= 0 ? selectedIndex : 0);
+      }
+    };
+
+    button.addEventListener('click', () => {
+      if (isOpen()) {
+        closeDropdown(false);
+      } else {
+        openDropdown('selected');
+      }
+    });
+
+    button.addEventListener('keydown', (event) => {
+      if (event.key === 'ArrowDown') {
+        event.preventDefault();
+        openDropdown('selected');
+      } else if (event.key === 'ArrowUp') {
+        event.preventDefault();
+        openDropdown('last');
+      } else if (event.key === 'Escape' && isOpen()) {
+        event.preventDefault();
+        closeDropdown(true);
+      }
+    });
+
+    options.forEach((option, index) => {
+      option.addEventListener('click', () => {
+        const href = option.getAttribute('data-href');
+        closeDropdown(false);
+        if (href) {
+          window.location.assign(href);
+        }
+      });
+
+      option.addEventListener('keydown', (event) => {
+        if (event.key === 'ArrowDown') {
+          event.preventDefault();
+          focusOption(index + 1);
+        } else if (event.key === 'ArrowUp') {
+          event.preventDefault();
+          focusOption(index - 1);
+        } else if (event.key === 'Home') {
+          event.preventDefault();
+          focusOption(0);
+        } else if (event.key === 'End') {
+          event.preventDefault();
+          focusOption(options.length - 1);
+        } else if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          const href = option.getAttribute('data-href');
+          closeDropdown(false);
+          if (href) {
+            window.location.assign(href);
+          }
+        } else if (event.key === 'Escape') {
+          event.preventDefault();
+          closeDropdown(true);
+        } else if (event.key === 'Tab') {
+          closeDropdown(false);
+        }
+      });
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (
+        event.key === 'Escape' &&
+        isOpen() &&
+        event.target instanceof Node &&
+        !container.contains(event.target)
+      ) {
+        closeDropdown(true);
+      }
+    });
+
+    document.addEventListener('click', (event) => {
+      if (isOpen() && event.target instanceof Node && !container.contains(event.target)) {
+        closeDropdown(false);
+      }
+    });
+  })();
+</script>

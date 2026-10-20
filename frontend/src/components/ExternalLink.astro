@@ -11,7 +11,7 @@ const { href, class: className = '' } = Astro.props;
   href={href}
   target="_blank"
   rel="noopener noreferrer"
-  class:list={['portfolio-link inline-flex items-center gap-1', className]}
+  class:list={['portfolio-link inline-flex min-h-11 items-center gap-1 sm:min-h-8', className]}
 >
   <slot />
   <span aria-hidden="true">↗</span>

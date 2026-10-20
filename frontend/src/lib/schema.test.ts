@@ -6,7 +6,8 @@ describe('PortfolioPayloadSchema', () => {
   it('validates the exported fixture payload without errors', () => {
     const parsed = PortfolioPayloadSchema.parse(fixtureData);
     expect(parsed.profile.handle).toBe('luan.kobs');
-    expect(parsed.projects).toHaveLength(3);
+    expect(parsed.experiences).toEqual([]);
+    expect(parsed.projects).toHaveLength(1);
   });
 
   it('rejects invalid payload', () => {

@@ -47,7 +47,7 @@ test('admin can edit singleton profile and changes reflect immediately in /api/v
     // Warm up cache first
     $this->getJson('/api/v1/portfolio')
         ->assertOk()
-        ->assertJsonPath('profile.city', '[sua cidade]');
+        ->assertJsonPath('profile.city', '');
 
     Livewire::test(EditProfile::class)
         ->fillForm([

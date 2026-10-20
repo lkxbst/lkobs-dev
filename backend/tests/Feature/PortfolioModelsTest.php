@@ -8,27 +8,21 @@ use App\Models\Project;
 use App\Models\SocialLink;
 use Database\Seeders\DatabaseSeeder;
 
-test('database seeder populates profile, social links, experiences, and projects with PDF placeholders', function (): void {
+test('database seeder populates profile, social links, and projects without bracket placeholders', function (): void {
     $this->seed(DatabaseSeeder::class);
 
     $profile = Profile::singleton();
 
     expect($profile->name)->toBe('Luan Kobs')
         ->and($profile->handle)->toBe('luan.kobs')
+        ->and($profile->city)->toBe('')
+        ->and($profile->email)->toBe('')
         ->and($profile->is_available)->toBeTrue()
-        ->and($profile->tools)->toBe(['TypeScript', 'React', 'Node.js', 'PostgreSQL', 'Docker']);
+        ->and($profile->tools)->toContain('PHP', 'Laravel', 'TypeScript');
 
     expect(SocialLink::ordered()->count())->toBe(3)
-        ->and(Experience::published()->ordered()->count())->toBe(3)
-        ->and(Project::published()->ordered()->count())->toBe(3);
-
-    $firstExperience = Experience::published()->ordered()->firstOrFail();
-    expect($firstExperience->formattedPeriod())->toBe('2023 — hoje');
-
-    $thirdProject = Project::published()->ordered()->get()->last();
-    expect($thirdProject)->not->toBeNull()
-        ->and($thirdProject?->live_url)->toBeNull()
-        ->and($thirdProject?->tags)->toBe(['[Go]', '[CLI]']);
+        ->and(Experience::published()->ordered()->count())->toBe(0)
+        ->and(Project::published()->ordered()->count())->toBe(1);
 });
 
 test('scopes filter unpublished items and order by sort_order', function (): void {
