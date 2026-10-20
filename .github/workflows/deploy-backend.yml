@@ -14,18 +14,28 @@ jobs:
   deploy:
     name: Deploy Backend to VPS via SSH
     runs-on: ubuntu-latest
-    if: ${{ secrets.VPS_HOST != '' && secrets.VPS_SSH_KEY != '' }}
+    env:
+      VPS_HOST: ${{ secrets.VPS_HOST }}
+      VPS_SSH_KEY: ${{ secrets.VPS_SSH_KEY }}
+      VPS_USER: ${{ secrets.VPS_USER }}
+      VPS_PORT: ${{ secrets.VPS_PORT }}
+      VPS_APP_DIR: ${{ secrets.VPS_APP_DIR }}
     steps:
+      - name: Skip if VPS secrets are not configured
+        if: env.VPS_HOST == '' || env.VPS_SSH_KEY == ''
+        run: echo "VPS_HOST / VPS_SSH_KEY secrets not configured yet. Skipping deploy."
+
       - name: Deploy on VPS
+        if: env.VPS_HOST != '' && env.VPS_SSH_KEY != ''
         uses: appleboy/ssh-action@v1.1.0
         with:
           host: ${{ secrets.VPS_HOST }}
-          username: ${{ secrets.VPS_USER || 'deploy' }}
-          port: ${{ secrets.VPS_PORT || 22 }}
+          username: ${{ env.VPS_USER || 'deploy' }}
+          port: ${{ env.VPS_PORT || 22 }}
           key: ${{ secrets.VPS_SSH_KEY }}
           script: |
             set -e
-            cd ${{ secrets.VPS_APP_DIR || '/opt/kobs-dev' }}
+            cd ${{ env.VPS_APP_DIR || '/opt/kobs-dev' }}
             git fetch origin main
             git reset --hard origin/main
             docker compose -f docker-compose.prod.yml build --pull

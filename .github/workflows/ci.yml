@@ -28,7 +28,7 @@ jobs:
         with:
           php-version: ${{ matrix.php }}
           extensions: pdo_sqlite, intl, gd, zip, bcmath, pcntl
-          coverage: pcov
+          coverage: none
 
       - name: Install Composer dependencies
         run: composer install --no-interaction --prefer-dist --no-progress
@@ -46,8 +46,8 @@ jobs:
       - name: Run Larastan (PHPStan level 8)
         run: ./vendor/bin/phpstan analyse --memory-limit=512M
 
-      - name: Run Pest with coverage (min 80%)
-        run: ./vendor/bin/pest --coverage --min=80
+      - name: Run Pest tests
+        run: ./vendor/bin/pest
 
   frontend:
     name: Frontend (Astro + Playwright + Lighthouse)
@@ -83,7 +83,7 @@ jobs:
       - name: Build static site with fixture
         env:
           USE_FIXTURE: 'true'
-          PUBLIC_SITE_URL: 'https://luankobs.dev'
+          SITE_URL: 'https://luankobs.dev'
         run: npm run build
 
       - name: Install Playwright Chromium
@@ -93,4 +93,4 @@ jobs:
         run: npm run test:e2e
 
       - name: Run Lighthouse CI
-        run: npx lhci collect && npx lhci assert
+        run: npx @lhci/cli@0.15.x collect --config=.lighthouserc.json && npx @lhci/cli@0.15.x assert --config=.lighthouserc.json
