@@ -36,12 +36,16 @@ test.describe('Portfolio UI, Responsive, Keyboard & Accessibility Checks', () =>
         return {
           userSelect: cs.userSelect,
           pointerEvents: cs.pointerEvents,
-          naturalWidth: (el as HTMLImageElement).naturalWidth,
         };
       });
       expect(heroImgStyles.userSelect).toBe('none');
       expect(heroImgStyles.pointerEvents).toBe('none');
-      expect(heroImgStyles.naturalWidth).toBeGreaterThan(0);
+
+      await expect
+        .poll(async () => {
+          return await heroImg.evaluate((el) => (el as HTMLImageElement).naturalWidth);
+        })
+        .toBeGreaterThan(0);
 
       // Verify theme-color meta tags
       await expect(
