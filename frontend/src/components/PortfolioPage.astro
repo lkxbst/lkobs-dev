@@ -1,0 +1,47 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from './Header.astro';
+import Hero from './Hero.astro';
+import About from './About.astro';
+import Experience from './Experience.astro';
+import Projects from './Projects.astro';
+import Contact from './Contact.astro';
+import Footer from './Footer.astro';
+import { getPortfolioData } from '../lib/api';
+import { getUiStrings, localizePortfolio, type Locale } from '../lib/i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const rawData = await getPortfolioData();
+const data = localizePortfolio(rawData, locale);
+const ui = getUiStrings(locale);
+
+const { profile, socialLinks, experiences, projects } = data;
+const pageTitle = `${profile.name} — ${profile.handle}`;
+const siteUrl = Astro.site ? Astro.site.toString().replace(/\/$/, '') : 'https://luankobs.dev';
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: profile.name,
+  url: siteUrl,
+  jobTitle: ui.jobTitle,
+  email: profile.email,
+  sameAs: socialLinks.map((link) => link.url),
+};
+---
+
+<BaseLayout title={pageTitle} description={profile.headline} locale={locale} jsonLd={jsonLd}>
+  <Header handle={profile.handle} locale={locale} />
+  <main id="conteudo-principal" class="flex-1">
+    <Hero profile={profile} socialLinks={socialLinks} locale={locale} />
+    <About profile={profile} locale={locale} />
+    <Experience experiences={experiences} profile={profile} locale={locale} />
+    <Projects projects={projects} socialLinks={socialLinks} locale={locale} />
+    <Contact profile={profile} socialLinks={socialLinks} locale={locale} />
+  </main>
+  <Footer name={profile.name} locale={locale} />
+</BaseLayout>
