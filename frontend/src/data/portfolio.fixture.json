@@ -1,0 +1,113 @@
+{
+    "profile": {
+        "name": "Luan Kobs",
+        "handle": "luan.kobs",
+        "city": "[sua cidade]",
+        "headline": "Desenvolvedor de software em [sua cidade]. Construo produtos web de ponta a ponta, do banco de dados à interface, com código simples e decisões bem explicadas.",
+        "headlineHighlight": "código simples e decisões bem explicadas.",
+        "isAvailable": true,
+        "availabilityLabel": "Disponível para novos projetos",
+        "about": {
+            "primary": "Sou desenvolvedor há [X] anos e gosto de trabalhar no meio do caminho entre produto e engenharia: entender o problema, propor a solução mais simples que resolva e cuidar dos detalhes na entrega.",
+            "secondary": "Hoje sou [cargo] na [empresa], onde [o que você faz no dia a dia]. Fora do trabalho, [um interesse pessoal real, como um projeto open source ou um hobby]."
+        },
+        "tools": [
+            "TypeScript",
+            "React",
+            "Node.js",
+            "PostgreSQL",
+            "Docker"
+        ],
+        "email": "[seu@email.com]",
+        "resumeUrl": null
+    },
+    "socialLinks": [
+        {
+            "label": "GitHub",
+            "url": "https://github.com/lkxbst",
+            "showInHero": true,
+            "showInContact": true
+        },
+        {
+            "label": "LinkedIn",
+            "url": "https://www.linkedin.com/in/luan-kobs/",
+            "showInHero": true,
+            "showInContact": true
+        },
+        {
+            "label": "[Outro link]",
+            "url": "https://example.com",
+            "showInHero": false,
+            "showInContact": true
+        }
+    ],
+    "experiences": [
+        {
+            "role": "[Cargo]",
+            "company": "[Empresa]",
+            "startYear": 2023,
+            "endYear": null,
+            "impact": "[Uma linha sobre o impacto: o que você construiu, melhorou ou liderou.]"
+        },
+        {
+            "role": "[Cargo]",
+            "company": "[Empresa]",
+            "startYear": 2021,
+            "endYear": 2023,
+            "impact": "[Uma linha sobre o impacto: o que você construiu, melhorou ou liderou.]"
+        },
+        {
+            "role": "[Cargo]",
+            "company": "[Empresa]",
+            "startYear": 2019,
+            "endYear": 2021,
+            "impact": "[Uma linha sobre o impacto: o que você construiu, melhorou ou liderou.]"
+        }
+    ],
+    "projects": [
+        {
+            "number": "01",
+            "name": "[Nome do projeto]",
+            "slug": "projeto-01",
+            "year": 2025,
+            "description": "[O problema que ele resolve e o que você construiu, em duas frases. Se tiver um resultado concreto, cite aqui.]",
+            "tags": [
+                "[React]",
+                "[Node.js]",
+                "[PostgreSQL]"
+            ],
+            "liveUrl": "https://example.com/projeto-01",
+            "repoUrl": "https://github.com/luankobs/projeto-01",
+            "image": null
+        },
+        {
+            "number": "02",
+            "name": "[Nome do projeto]",
+            "slug": "projeto-02",
+            "year": 2024,
+            "description": "[Contexto: para quem foi feito, qual era a restrição e qual decisão técnica você tomou para resolver.]",
+            "tags": [
+                "[Next.js]",
+                "[TypeScript]"
+            ],
+            "liveUrl": "https://example.com/projeto-02",
+            "repoUrl": "https://github.com/luankobs/projeto-02",
+            "image": null
+        },
+        {
+            "number": "03",
+            "name": "[Nome do projeto]",
+            "slug": "projeto-03",
+            "year": 2023,
+            "description": "[Um projeto pessoal ou open source que mostre algo que você gosta de fazer. Uma frase sobre o porquê.]",
+            "tags": [
+                "[Go]",
+                "[CLI]"
+            ],
+            "liveUrl": null,
+            "repoUrl": "https://github.com/luankobs/projeto-03",
+            "image": null
+        }
+    ],
+    "updatedAt": "2026-10-20T00:41:14+00:00"
+}

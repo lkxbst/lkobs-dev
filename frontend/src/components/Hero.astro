@@ -1,0 +1,56 @@
+---
+import ExternalLink from './ExternalLink.astro';
+import { splitHeadline } from '../lib/format';
+import type { Profile, SocialLink } from '../lib/schema';
+
+interface Props {
+  profile: Profile;
+  socialLinks: SocialLink[];
+}
+
+const { profile, socialLinks } = Astro.props;
+const heroLinks = socialLinks.filter((link) => link.showInHero);
+const { before, highlight, after } = splitHeadline(profile.headline, profile.headlineHighlight);
+const resumeHref = profile.resumeUrl ?? '/cv';
+---
+
+<section aria-label="Apresentação" class="pt-24 pb-20 lg:pt-40 lg:pb-36">
+  <div class="container-portfolio">
+    {
+      profile.isAvailable && (
+        <div class="mb-6 flex items-center gap-2.5 font-mono text-[12px] text-fg-muted">
+          <span
+            aria-hidden="true"
+            class="inline-block h-1.5 w-1.5 rounded-full bg-accent motion-safe:animate-pulse"
+          />
+          <span>{profile.availabilityLabel}</span>
+        </div>
+      )
+    }
+
+    <h1 class="text-[clamp(3.5rem,7vw,6rem)] leading-none font-medium tracking-[-0.03em] text-fg">
+      {profile.name}
+    </h1>
+
+    <p
+      class="mt-8 max-w-[730px] text-[clamp(1.25rem,2.2vw,1.75rem)] leading-[1.4] font-normal text-fg-muted"
+    >
+      {before}
+      {highlight && <span class="text-fg">{highlight}</span>}
+      {after}
+    </p>
+
+    <ul class="mt-10 flex flex-wrap items-center gap-7 text-[14px]">
+      {
+        heroLinks.map((link) => (
+          <li>
+            <ExternalLink href={link.url}>{link.label}</ExternalLink>
+          </li>
+        ))
+      }
+      <li>
+        <ExternalLink href={resumeHref}>Currículo (PDF)</ExternalLink>
+      </li>
+    </ul>
+  </div>
+</section>

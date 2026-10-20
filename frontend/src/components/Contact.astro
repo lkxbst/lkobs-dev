@@ -1,0 +1,54 @@
+---
+import SectionLabel from './SectionLabel.astro';
+import ExternalLink from './ExternalLink.astro';
+import type { Profile, SocialLink } from '../lib/schema';
+
+interface Props {
+  profile: Profile;
+  socialLinks: SocialLink[];
+}
+
+const { profile, socialLinks } = Astro.props;
+const contactLinks = socialLinks.filter((link) => link.showInContact);
+---
+
+<section
+  id="contato"
+  aria-labelledby="heading-contato"
+  class="scroll-mt-20 border-t border-border py-16 lg:py-24"
+>
+  <div class="container-portfolio grid grid-cols-1 gap-8 lg:grid-cols-[208px_1fr] lg:gap-0">
+    <div>
+      <SectionLabel id="heading-contato" label="Contato" />
+    </div>
+
+    <div>
+      <p
+        class="max-w-[600px] text-[clamp(2rem,3.5vw,3rem)] leading-[1.15] font-medium tracking-[-0.02em] text-fg"
+      >
+        Tem um projeto ou uma vaga em mente? Me manda uma mensagem.
+      </p>
+
+      <div class="mt-8">
+        <a
+          href={`mailto:${profile.email}`}
+          class="inline-block text-[clamp(1.25rem,2vw,1.5rem)] font-normal text-fg underline decoration-accent decoration-2 underline-offset-6 transition-opacity duration-150 hover:opacity-85"
+        >
+          {profile.email}
+        </a>
+      </div>
+
+      {
+        contactLinks.length > 0 && (
+          <ul class="mt-12 flex flex-wrap items-center gap-7 font-mono text-[13px]">
+            {contactLinks.map((link) => (
+              <li>
+                <ExternalLink href={link.url}>{link.label}</ExternalLink>
+              </li>
+            ))}
+          </ul>
+        )
+      }
+    </div>
+  </div>
+</section>

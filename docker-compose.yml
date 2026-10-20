@@ -1,0 +1,55 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+      args:
+        UID: ${UID:-1001}
+        GID: ${GID:-1001}
+    container_name: kobs-dev-app
+    restart: unless-stopped
+    stop_grace_period: 1s
+    working_dir: /var/www/html
+    volumes:
+      - ./backend:/var/www/html
+      - ./frontend:/var/www/frontend
+    networks:
+      - kobs-net
+
+  web:
+    image: nginx:1.27-alpine
+    container_name: kobs-dev-web
+    restart: unless-stopped
+    stop_grace_period: 1s
+    ports:
+      - "${APP_PORT:-8000}:80"
+    volumes:
+      - ./backend:/var/www/html:ro
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - app
+    networks:
+      - kobs-net
+
+  queue:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+      args:
+        UID: ${UID:-1001}
+        GID: ${GID:-1001}
+    container_name: kobs-dev-queue
+    restart: unless-stopped
+    stop_grace_period: 1s
+    working_dir: /var/www/html
+    command: ["php", "artisan", "queue:work", "--tries=3", "--timeout=90"]
+    volumes:
+      - ./backend:/var/www/html
+    depends_on:
+      - app
+    networks:
+      - kobs-net
+
+networks:
+  kobs-net:
+    driver: bridge

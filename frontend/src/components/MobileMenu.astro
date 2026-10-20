@@ -1,0 +1,103 @@
+---
+interface NavItem {
+  label: string;
+  href: string;
+}
+
+interface Props {
+  items: NavItem[];
+}
+
+const { items } = Astro.props;
+---
+
+<div class="relative sm:hidden" data-mobile-menu>
+  <button
+    type="button"
+    data-mobile-menu-button
+    aria-expanded="false"
+    aria-controls="mobile-nav-panel"
+    class="inline-flex h-8 items-center justify-center rounded-full border border-border px-3 font-mono text-[13px] text-fg-muted transition-colors duration-150 hover:border-fg-muted hover:text-fg"
+  >
+    Menu
+  </button>
+
+  <div
+    id="mobile-nav-panel"
+    data-mobile-menu-panel
+    hidden
+    class="absolute right-0 top-11 z-50 w-48 rounded-md border border-border bg-bg p-3 shadow-lg"
+  >
+    <ul class="flex flex-col gap-2">
+      {
+        items.map((item) => (
+          <li>
+            <a
+              href={item.href}
+              data-mobile-menu-link
+              class="block rounded px-2 py-1.5 text-[14px] text-fg-muted transition-colors duration-150 hover:bg-surface hover:text-fg"
+            >
+              {item.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</div>
+
+<script is:inline>
+  (() => {
+    const container = document.querySelector('[data-mobile-menu]');
+    if (!container) return;
+    const button = container.querySelector('[data-mobile-menu-button]');
+    const panel = container.querySelector('[data-mobile-menu-panel]');
+    if (!button || !panel) return;
+
+    const closeMenu = (returnFocus = false) => {
+      button.setAttribute('aria-expanded', 'false');
+      panel.setAttribute('hidden', '');
+      if (returnFocus && button instanceof HTMLElement) {
+        button.focus();
+      }
+    };
+
+    const openMenu = () => {
+      button.setAttribute('aria-expanded', 'true');
+      panel.removeAttribute('hidden');
+      const firstLink = panel.querySelector('a');
+      if (firstLink instanceof HTMLElement) {
+        firstLink.focus();
+      }
+    };
+
+    button.addEventListener('click', () => {
+      const expanded = button.getAttribute('aria-expanded') === 'true';
+      if (expanded) {
+        closeMenu(false);
+      } else {
+        openMenu();
+      }
+    });
+
+    panel.querySelectorAll('[data-mobile-menu-link]').forEach((link) => {
+      link.addEventListener('click', () => closeMenu(false));
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && button.getAttribute('aria-expanded') === 'true') {
+        closeMenu(true);
+      }
+    });
+
+    document.addEventListener('click', (event) => {
+      if (
+        button.getAttribute('aria-expanded') === 'true' &&
+        event.target instanceof Node &&
+        !container.contains(event.target)
+      ) {
+        closeMenu(false);
+      }
+    });
+  })();
+</script>

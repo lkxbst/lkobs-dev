@@ -1,0 +1,7 @@
+dist/
+node_modules/
+.astro/
+.lighthouseci/
+playwright-report/
+test-results/
+src/data/portfolio.fixture.json

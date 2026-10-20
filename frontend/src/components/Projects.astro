@@ -1,0 +1,38 @@
+---
+import SectionLabel from './SectionLabel.astro';
+import ProjectCard from './ProjectCard.astro';
+import ExternalLink from './ExternalLink.astro';
+import type { Project, SocialLink } from '../lib/schema';
+
+interface Props {
+  projects: Project[];
+  socialLinks: SocialLink[];
+}
+
+const { projects, socialLinks } = Astro.props;
+const githubLink =
+  socialLinks.find((link) => link.label.toLowerCase().includes('github'))?.url ??
+  'https://github.com/luankobs';
+---
+
+<section
+  id="projetos"
+  aria-labelledby="heading-projetos"
+  class="scroll-mt-20 border-t border-border py-16 lg:py-20"
+>
+  <div class="container-portfolio grid grid-cols-1 gap-8 lg:grid-cols-[208px_1fr] lg:gap-0">
+    <div>
+      <SectionLabel id="heading-projetos" label="Projetos" />
+    </div>
+
+    <div>
+      <div class="divide-y divide-border">
+        {projects.map((project, index) => <ProjectCard project={project} isFirst={index === 0} />)}
+      </div>
+
+      <div class="mt-2 border-t border-border pt-8 text-[14px]">
+        <ExternalLink href={githubLink}>Mais no GitHub</ExternalLink>
+      </div>
+    </div>
+  </div>
+</section>

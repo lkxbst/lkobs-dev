@@ -1,0 +1,42 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { getPortfolioData } from '../lib/api';
+
+const { profile } = await getPortfolioData();
+const pageTitle = `Página não encontrada — ${profile.handle}`;
+---
+
+<BaseLayout
+  title={pageTitle}
+  description="A página que você tentou acessar não existe ou foi movida."
+>
+  <Header handle={profile.handle} />
+  <main id="conteudo-principal" class="flex flex-1 items-center py-24">
+    <section aria-labelledby="heading-404" class="container-portfolio">
+      <div class="mb-4 flex items-center gap-2.5 font-mono text-[13px] text-fg-muted">
+        <span aria-hidden="true" class="inline-block h-1.5 w-1.5 rounded-full bg-accent"></span>
+        <span>Erro 404</span>
+      </div>
+      <h1
+        id="heading-404"
+        class="mt-4 text-[clamp(2.5rem,5vw,4.5rem)] leading-[1.05] font-medium tracking-[-0.03em] text-fg"
+      >
+        Página não encontrada.
+      </h1>
+      <p class="mt-6 max-w-[520px] text-[18px] leading-[1.6] text-fg-muted">
+        O endereço que você tentou acessar não existe ou foi alterado.
+      </p>
+      <div class="mt-10">
+        <a
+          href="/"
+          class="portfolio-link font-mono text-[14px] text-fg underline decoration-accent underline-offset-4"
+        >
+          ← Voltar para a página inicial
+        </a>
+      </div>
+    </section>
+  </main>
+  <Footer name={profile.name} />
+</BaseLayout>

@@ -1,0 +1,19 @@
+---
+interface Props {
+  href: string;
+  class?: string;
+}
+
+const { href, class: className = '' } = Astro.props;
+---
+
+<a
+  href={href}
+  target="_blank"
+  rel="noopener noreferrer"
+  class:list={['portfolio-link inline-flex items-center gap-1', className]}
+>
+  <slot />
+  <span aria-hidden="true">↗</span>
+  <span class="sr-only">(abre em nova aba)</span>
+</a>

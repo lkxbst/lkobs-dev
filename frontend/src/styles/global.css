@@ -1,0 +1,121 @@
+@import 'tailwindcss';
+@import '@fontsource-variable/geist';
+@import '@fontsource-variable/geist-mono';
+
+:root,
+:root[data-theme='dark'] {
+  --bg: #0f0f0d;
+  --surface: #181816;
+  --border: #242422;
+  --fg: #edeee9;
+  --fg-muted: #9a9b96;
+  --accent: #ff6d39;
+  --link-underline: color-mix(in srgb, var(--fg-muted) 40%, transparent);
+  color-scheme: dark;
+}
+
+:root[data-theme='light'] {
+  --bg: #f6f6f3;
+  --surface: #ecece8;
+  --border: #dfdfda;
+  --fg: #121210;
+  --fg-muted: #5e5f5a;
+  --accent: #e2531f;
+  --link-underline: color-mix(in srgb, var(--fg-muted) 40%, transparent);
+  color-scheme: light;
+}
+
+@theme {
+  --font-sans: 'Geist Variable', ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-mono:
+    'Geist Mono Variable', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-border: var(--border);
+  --color-fg: var(--fg);
+  --color-fg-muted: var(--fg-muted);
+  --color-accent: var(--accent);
+}
+
+html {
+  background-color: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-sans);
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--fg);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.container-portfolio {
+  width: 100%;
+  max-width: 1120px;
+  margin-inline: auto;
+  padding-inline: 20px;
+}
+
+@media (min-width: 640px) {
+  .container-portfolio {
+    padding-inline: 32px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .container-portfolio {
+    padding-inline: 0;
+  }
+}
+
+.portfolio-link {
+  color: var(--fg-muted);
+  text-decoration: underline;
+  text-decoration-color: var(--link-underline);
+  text-underline-offset: 4px;
+  transition:
+    color 150ms ease,
+    text-decoration-color 150ms ease;
+}
+
+.portfolio-link:hover {
+  color: var(--fg);
+  text-decoration-color: var(--accent);
+}
+
+.project-placeholder-stripes {
+  background-color: var(--surface);
+  background-image: repeating-linear-gradient(
+    45deg,
+    transparent,
+    transparent 10px,
+    color-mix(in srgb, var(--border) 55%, transparent) 10px,
+    color-mix(in srgb, var(--border) 55%, transparent) 11px
+  );
+}
