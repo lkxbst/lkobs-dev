@@ -35,6 +35,24 @@ class DatabaseSeeder extends Seeder
             'tools' => ['TypeScript', 'React', 'Node.js', 'PostgreSQL', 'Docker'],
             'email' => '[seu@email.com]',
             'resume_path' => null,
+            'translations' => [
+                'en' => [
+                    'city' => '[your city]',
+                    'headline' => 'Software developer based in [your city]. I build end-to-end web products, from database to interface, with clean code and well-explained decisions.',
+                    'headlineHighlight' => 'clean code and well-explained decisions.',
+                    'availabilityLabel' => 'Available for new projects',
+                    'aboutPrimary' => 'I have been a developer for [X] years, working at the intersection of product and engineering: understanding the business problem, proposing the leanest solution that works, and caring for every delivery detail.',
+                    'aboutSecondary' => 'I build custom software, SaaS platforms, intelligent automations, and AI integrations for companies looking to gain scale, speed, and operational efficiency.',
+                ],
+                'es' => [
+                    'city' => '[tu ciudad]',
+                    'headline' => 'Desarrollador de software en [tu ciudad]. Construyo productos web de extremo a extremo, desde la base de datos hasta la interfaz, con código simple y decisiones claras.',
+                    'headlineHighlight' => 'código simple y decisiones claras.',
+                    'availabilityLabel' => 'Disponible para nuevos proyectos',
+                    'aboutPrimary' => 'Soy desarrollador desde hace [X] años y trabajo entre producto e ingeniería: entender el problema del negocio, proponer la solución más eficiente y cuidar cada detalle en la entrega.',
+                    'aboutSecondary' => 'Desarrollo sistemas a medida, plataformas SaaS, automatizaciones inteligentes e integraciones con IA para empresas que necesitan ganar escala, velocidad y eficiencia operativa.',
+                ],
+            ],
         ]);
 
         SocialLink::query()->create([
@@ -67,6 +85,18 @@ class DatabaseSeeder extends Seeder
             'start_year' => 2023,
             'end_year' => null,
             'impact' => '[Uma linha sobre o impacto: o que você construiu, melhorou ou liderou.]',
+            'translations' => [
+                'en' => [
+                    'role' => '[Role]',
+                    'company' => '[Company]',
+                    'impact' => '[One line about the impact: what you built, improved, or led.]',
+                ],
+                'es' => [
+                    'role' => '[Cargo]',
+                    'company' => '[Empresa]',
+                    'impact' => '[Una línea sobre el impacto: lo que construiste, mejoraste o lideraste.]',
+                ],
+            ],
             'sort_order' => 1,
             'is_published' => true,
         ]);
@@ -77,6 +107,18 @@ class DatabaseSeeder extends Seeder
             'start_year' => 2021,
             'end_year' => 2023,
             'impact' => '[Uma linha sobre o impacto: o que você construiu, melhorou ou liderou.]',
+            'translations' => [
+                'en' => [
+                    'role' => '[Role]',
+                    'company' => '[Company]',
+                    'impact' => '[One line about the impact: what you built, improved, or led.]',
+                ],
+                'es' => [
+                    'role' => '[Cargo]',
+                    'company' => '[Empresa]',
+                    'impact' => '[Una línea sobre el impacto: lo que construiste, mejoraste o lideraste.]',
+                ],
+            ],
             'sort_order' => 2,
             'is_published' => true,
         ]);
@@ -87,6 +129,18 @@ class DatabaseSeeder extends Seeder
             'start_year' => 2019,
             'end_year' => 2021,
             'impact' => '[Uma linha sobre o impacto: o que você construiu, melhorou ou liderou.]',
+            'translations' => [
+                'en' => [
+                    'role' => '[Role]',
+                    'company' => '[Company]',
+                    'impact' => '[One line about the impact: what you built, improved, or led.]',
+                ],
+                'es' => [
+                    'role' => '[Cargo]',
+                    'company' => '[Empresa]',
+                    'impact' => '[Una línea sobre el impacto: lo que construiste, mejoraste o lideraste.]',
+                ],
+            ],
             'sort_order' => 3,
             'is_published' => true,
         ]);
@@ -103,6 +157,16 @@ class DatabaseSeeder extends Seeder
             'image_alt' => null,
             'image_width' => null,
             'image_height' => null,
+            'translations' => [
+                'en' => [
+                    'name' => '[Project name]',
+                    'description' => '[The problem it solves and what you built, in two sentences. Mention concrete results if available.]',
+                ],
+                'es' => [
+                    'name' => '[Nombre del proyecto]',
+                    'description' => '[El problema que resuelve y lo que construiste, en dos frases. Si tienes un resultado concreto, menciónalo aquí.]',
+                ],
+            ],
             'sort_order' => 1,
             'is_published' => true,
         ]);
@@ -119,6 +183,16 @@ class DatabaseSeeder extends Seeder
             'image_alt' => null,
             'image_width' => null,
             'image_height' => null,
+            'translations' => [
+                'en' => [
+                    'name' => '[Project name]',
+                    'description' => '[Context: who it was built for, what the constraint was, and the technical decision you made to solve it.]',
+                ],
+                'es' => [
+                    'name' => '[Nombre del proyecto]',
+                    'description' => '[Contexto: para quién fue hecho, cuál era la restricción y qué decisión técnica tomaste para resolverlo.]',
+                ],
+            ],
             'sort_order' => 2,
             'is_published' => true,
         ]);
@@ -135,6 +209,16 @@ class DatabaseSeeder extends Seeder
             'image_alt' => null,
             'image_width' => null,
             'image_height' => null,
+            'translations' => [
+                'en' => [
+                    'name' => '[Project name]',
+                    'description' => '[A personal or open-source project showcasing something you enjoy building. One sentence on why.]',
+                ],
+                'es' => [
+                    'name' => '[Nombre del proyecto]',
+                    'description' => '[Un proyecto personal u open source que muestre algo que te gusta construir. Una frase sobre el porqué.]',
+                ],
+            ],
             'sort_order' => 3,
             'is_published' => true,
         ]);

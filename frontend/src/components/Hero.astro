@@ -1,20 +1,23 @@
 ---
 import ExternalLink from './ExternalLink.astro';
 import { splitHeadline } from '../lib/format';
+import { getUiStrings, type Locale } from '../lib/i18n';
 import type { Profile, SocialLink } from '../lib/schema';
 
 interface Props {
   profile: Profile;
   socialLinks: SocialLink[];
+  locale?: Locale;
 }
 
-const { profile, socialLinks } = Astro.props;
+const { profile, socialLinks, locale = 'pt' } = Astro.props;
+const ui = getUiStrings(locale);
 const heroLinks = socialLinks.filter((link) => link.showInHero);
 const { before, highlight, after } = splitHeadline(profile.headline, profile.headlineHighlight);
 const resumeHref = profile.resumeUrl ?? '/cv';
 ---
 
-<section aria-label="Apresentação" class="pt-24 pb-20 lg:pt-40 lg:pb-36">
+<section aria-label={ui.hero.ariaLabel} class="pt-24 pb-20 lg:pt-40 lg:pb-36">
   <div class="container-portfolio">
     {
       profile.isAvailable && (
@@ -49,7 +52,7 @@ const resumeHref = profile.resumeUrl ?? '/cv';
         ))
       }
       <li>
-        <ExternalLink href={resumeHref}>Currículo (PDF)</ExternalLink>
+        <ExternalLink href={resumeHref}>{ui.hero.resumePdf}</ExternalLink>
       </li>
     </ul>
   </div>

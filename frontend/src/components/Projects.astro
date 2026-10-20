@@ -2,17 +2,20 @@
 import SectionLabel from './SectionLabel.astro';
 import ProjectCard from './ProjectCard.astro';
 import ExternalLink from './ExternalLink.astro';
+import { getUiStrings, type Locale } from '../lib/i18n';
 import type { Project, SocialLink } from '../lib/schema';
 
 interface Props {
   projects: Project[];
   socialLinks: SocialLink[];
+  locale?: Locale;
 }
 
-const { projects, socialLinks } = Astro.props;
+const { projects, socialLinks, locale = 'pt' } = Astro.props;
+const ui = getUiStrings(locale);
 const githubLink =
   socialLinks.find((link) => link.label.toLowerCase().includes('github'))?.url ??
-  'https://github.com/luankobs';
+  'https://github.com/lkxbst';
 ---
 
 <section
@@ -22,16 +25,20 @@ const githubLink =
 >
   <div class="container-portfolio grid grid-cols-1 gap-8 lg:grid-cols-[208px_1fr] lg:gap-0">
     <div>
-      <SectionLabel id="heading-projetos" label="Projetos" />
+      <SectionLabel id="heading-projetos" label={ui.projects.label} />
     </div>
 
     <div>
       <div class="divide-y divide-border">
-        {projects.map((project, index) => <ProjectCard project={project} isFirst={index === 0} />)}
+        {
+          projects.map((project, index) => (
+            <ProjectCard project={project} isFirst={index === 0} locale={locale} />
+          ))
+        }
       </div>
 
       <div class="mt-2 border-t border-border pt-8 text-[14px]">
-        <ExternalLink href={githubLink}>Mais no GitHub</ExternalLink>
+        <ExternalLink href={githubLink}>{ui.projects.moreOnGithub}</ExternalLink>
       </div>
     </div>
   </div>

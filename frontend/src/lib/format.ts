@@ -2,8 +2,12 @@ export function formatProjectNumber(position: number): string {
   return String(position).padStart(2, '0');
 }
 
-export function formatExperiencePeriod(startYear: number, endYear: number | null): string {
-  const end = endYear !== null ? String(endYear) : 'hoje';
+export function formatExperiencePeriod(
+  startYear: number,
+  endYear: number | null,
+  presentLabel = 'hoje',
+): string {
+  const end = endYear !== null ? String(endYear) : presentLabel;
   return `${startYear} — ${end}`;
 }
 

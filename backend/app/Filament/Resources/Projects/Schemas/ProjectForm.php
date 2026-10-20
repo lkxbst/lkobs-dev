@@ -73,6 +73,31 @@ class ProjectForm
                             ->label('Publicado')
                             ->default(true),
                     ]),
+                Section::make('Traduções (EN / ES)')
+                    ->collapsed()
+                    ->columns(2)
+                    ->components([
+                        TextInput::make('translations.en.name')
+                            ->label('Project Name (EN)')
+                            ->maxLength(255),
+                        TextInput::make('translations.en.imageAlt')
+                            ->label('Image Alt (EN)')
+                            ->maxLength(255),
+                        Textarea::make('translations.en.description')
+                            ->label('Description (EN)')
+                            ->rows(3)
+                            ->columnSpanFull(),
+                        TextInput::make('translations.es.name')
+                            ->label('Nombre del proyecto (ES)')
+                            ->maxLength(255),
+                        TextInput::make('translations.es.imageAlt')
+                            ->label('Texto alternativo de imagen (ES)')
+                            ->maxLength(255),
+                        Textarea::make('translations.es.description')
+                            ->label('Descripción (ES)')
+                            ->rows(3)
+                            ->columnSpanFull(),
+                    ]),
                 Section::make('Imagem do Projeto (16:10)')
                     ->components([
                         FileUpload::make('image_path')

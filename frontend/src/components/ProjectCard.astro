@@ -2,14 +2,17 @@
 import { Image } from 'astro:assets';
 import Tag from './Tag.astro';
 import ExternalLink from './ExternalLink.astro';
+import { getUiStrings, type Locale } from '../lib/i18n';
 import type { Project } from '../lib/schema';
 
 interface Props {
   project: Project;
   isFirst?: boolean;
+  locale?: Locale;
 }
 
-const { project, isFirst = false } = Astro.props;
+const { project, isFirst = false, locale = 'pt' } = Astro.props;
+const ui = getUiStrings(locale);
 ---
 
 <article
@@ -33,7 +36,7 @@ const { project, isFirst = false } = Astro.props;
 
     {
       project.tags.length > 0 && (
-        <ul class="mt-5 flex flex-wrap gap-2" aria-label="Tecnologias utilizadas">
+        <ul class="mt-5 flex flex-wrap gap-2" aria-label={ui.projects.techUsedAria}>
           {project.tags.map((tag) => (
             <li>
               <Tag label={tag} />
@@ -46,8 +49,12 @@ const { project, isFirst = false } = Astro.props;
     {
       (project.liveUrl || project.repoUrl) && (
         <div class="mt-6 flex flex-wrap items-center gap-6 text-[14px]">
-          {project.liveUrl && <ExternalLink href={project.liveUrl}>Ver projeto</ExternalLink>}
-          {project.repoUrl && <ExternalLink href={project.repoUrl}>Código</ExternalLink>}
+          {project.liveUrl && (
+            <ExternalLink href={project.liveUrl}>{ui.projects.liveProject}</ExternalLink>
+          )}
+          {project.repoUrl && (
+            <ExternalLink href={project.repoUrl}>{ui.projects.sourceCode}</ExternalLink>
+          )}
         </div>
       )
     }
@@ -69,7 +76,9 @@ const { project, isFirst = false } = Astro.props;
           />
         ) : (
           <div class="project-placeholder-stripes flex h-full w-full items-center justify-center p-4">
-            <span class="font-mono text-[12px] text-fg-muted">captura de tela do projeto</span>
+            <span class="font-mono text-[12px] text-fg-muted">
+              {ui.projects.screenshotPlaceholder}
+            </span>
           </div>
         )
       }

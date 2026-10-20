@@ -38,6 +38,10 @@ class ProfileResource extends JsonResource
             'tools' => array_values($this->tools),
             'email' => $this->email,
             'resumeUrl' => $hasResume ? url('/cv') : null,
+            'translations' => [
+                'en' => (object) ($this->translations['en'] ?? []),
+                'es' => (object) ($this->translations['es'] ?? []),
+            ],
         ];
     }
 }

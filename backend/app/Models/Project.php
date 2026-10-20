@@ -23,6 +23,7 @@ use Illuminate\Support\Carbon;
  * @property string|null $image_alt
  * @property int|null $image_width
  * @property int|null $image_height
+ * @property array<string, array<string, string|null>>|null $translations
  * @property int $sort_order
  * @property bool $is_published
  * @property Carbon|null $created_at
@@ -45,6 +46,7 @@ class Project extends Model
         'image_alt',
         'image_width',
         'image_height',
+        'translations',
         'sort_order',
         'is_published',
     ];
@@ -59,6 +61,7 @@ class Project extends Model
             'tags' => 'array',
             'image_width' => 'integer',
             'image_height' => 'integer',
+            'translations' => 'array',
             'sort_order' => 'integer',
             'is_published' => 'boolean',
         ];

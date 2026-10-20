@@ -23,6 +23,7 @@ use Illuminate\Support\Carbon;
  * @property array<int, string> $tools
  * @property string $email
  * @property string|null $resume_path
+ * @property array<string, array<string, string|null>>|null $translations
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  */
@@ -44,6 +45,7 @@ class Profile extends Model
         'tools',
         'email',
         'resume_path',
+        'translations',
     ];
 
     /**
@@ -54,6 +56,7 @@ class Profile extends Model
         return [
             'is_available' => 'boolean',
             'tools' => 'array',
+            'translations' => 'array',
         ];
     }
 
@@ -66,7 +69,8 @@ class Profile extends Model
             return $profile;
         }
 
-        return self::query()->create([
+        /** @var self $created */
+        $created = self::query()->create([
             'name' => 'Luan Kobs',
             'handle' => 'luan.kobs',
             'city' => '[sua cidade]',
@@ -74,11 +78,17 @@ class Profile extends Model
             'headline_highlight' => 'código simples e decisões bem explicadas.',
             'is_available' => true,
             'availability_label' => 'Disponível para novos projetos',
-            'about_primary' => 'Sou desenvolvedor há [X] anos e gosto de trabalhar no meio do caminho entre produto e engenharia: entender o problema, propor a solução mais simples que resolva e cuidar dos detalhes na entrega.',
-            'about_secondary' => 'Hoje sou [cargo] na [empresa], onde [o que você faz no dia a dia]. Fora do trabalho, [um interesse pessoal real, como um projeto open source ou um hobby].',
+            'about_primary' => 'Sou desenvolvedor há [X] anos e trabalho no meio do caminho entre produto e engenharia: entender o problema do negócio, propor a solução mais eficiente que resolva e cuidar de cada detalhe na entrega.',
+            'about_secondary' => 'Desenvolvo sistemas sob medida, plataformas SaaS, automações inteligentes e integrações com IA para empresas que precisam ganhar escala, velocidade e eficiência operacional.',
             'tools' => ['TypeScript', 'React', 'Node.js', 'PostgreSQL', 'Docker'],
             'email' => '[seu@email.com]',
             'resume_path' => null,
+            'translations' => [
+                'en' => [],
+                'es' => [],
+            ],
         ]);
+
+        return $created;
     }
 }

@@ -1,18 +1,21 @@
 ---
 import ThemeToggle from './ThemeToggle.astro';
 import MobileMenu from './MobileMenu.astro';
+import { getUiStrings, LOCALES, type Locale } from '../lib/i18n';
 
 interface Props {
   handle: string;
+  locale?: Locale;
 }
 
-const { handle } = Astro.props;
+const { handle, locale = 'pt' } = Astro.props;
+const ui = getUiStrings(locale);
 
 const navItems = [
-  { label: 'Sobre', href: '#sobre' },
-  { label: 'Experiência', href: '#experiencia' },
-  { label: 'Projetos', href: '#projetos' },
-  { label: 'Contato', href: '#contato' },
+  { label: ui.nav.about, href: '#sobre' },
+  { label: ui.nav.experience, href: '#experiencia' },
+  { label: ui.nav.projects, href: '#projetos' },
+  { label: ui.nav.contact, href: '#contato' },
 ];
 ---
 
@@ -25,8 +28,8 @@ const navItems = [
       {handle}
     </a>
 
-    <div class="flex items-center gap-6">
-      <nav aria-label="Navegação principal" class="hidden sm:block">
+    <div class="flex items-center gap-5 sm:gap-6">
+      <nav aria-label={ui.navAriaLabel} class="hidden sm:block">
         <ul class="flex items-center gap-7">
           {
             navItems.map((item) => (
@@ -44,7 +47,37 @@ const navItems = [
         </ul>
       </nav>
 
-      <MobileMenu items={navItems} />
+      <nav
+        aria-label={ui.langSwitcherAriaLabel}
+        data-lang-switcher
+        class="hidden items-center gap-1.5 font-mono text-[12px] sm:flex"
+      >
+        {
+          LOCALES.map((loc, idx) => (
+            <>
+              {idx > 0 && (
+                <span aria-hidden="true" class="text-fg-subtle">
+                  ·
+                </span>
+              )}
+              <a
+                href={loc.href}
+                aria-current={loc.code === locale ? 'page' : undefined}
+                class:list={[
+                  'px-1 py-0.5 transition-colors duration-150',
+                  loc.code === locale
+                    ? 'font-medium text-fg underline decoration-accent decoration-2 underline-offset-4'
+                    : 'text-fg-muted hover:text-fg',
+                ]}
+              >
+                {loc.label}
+              </a>
+            </>
+          ))
+        }
+      </nav>
+
+      <MobileMenu items={navItems} locale={locale} />
       <ThemeToggle />
     </div>
   </div>

@@ -92,7 +92,7 @@ test.describe('Portfolio Smoke, Responsive & Accessibility Checks', () => {
     await expect(page).toHaveURL(/#contato$/);
   });
 
-  test('passes axe accessibility checks in dark theme, light theme, and 404 page', async ({
+  test('passes axe accessibility checks in dark theme, light theme, /en, /es, and 404 page', async ({
     page,
   }) => {
     await page.setViewportSize({ width: 1440, height: 900 });
@@ -106,6 +106,18 @@ test.describe('Portfolio Smoke, Responsive & Accessibility Checks', () => {
 
     const lightResults = await new AxeBuilder({ page }).exclude('astro-dev-toolbar').analyze();
     expect(lightResults.violations).toEqual([]);
+
+    await page.goto('/en/');
+    await expect(page.locator('html')).toHaveAttribute('lang', 'en');
+    await expect(page.locator('#contato')).toContainText('Chat on WhatsApp');
+    const enResults = await new AxeBuilder({ page }).exclude('astro-dev-toolbar').analyze();
+    expect(enResults.violations).toEqual([]);
+
+    await page.goto('/es/');
+    await expect(page.locator('html')).toHaveAttribute('lang', 'es');
+    await expect(page.locator('#contato')).toContainText('Hablar por WhatsApp');
+    const esResults = await new AxeBuilder({ page }).exclude('astro-dev-toolbar').analyze();
+    expect(esResults.violations).toEqual([]);
 
     await page.goto('/404');
     await expect(page.locator('main h1')).toContainText('Página não encontrada');

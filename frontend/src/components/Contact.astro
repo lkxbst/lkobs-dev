@@ -1,18 +1,19 @@
 ---
 import SectionLabel from './SectionLabel.astro';
 import ExternalLink from './ExternalLink.astro';
+import { getUiStrings, type Locale } from '../lib/i18n';
 import type { Profile, SocialLink } from '../lib/schema';
 
 interface Props {
   profile: Profile;
   socialLinks: SocialLink[];
+  locale?: Locale;
 }
 
-const { profile, socialLinks } = Astro.props;
+const { profile, socialLinks, locale = 'pt' } = Astro.props;
+const ui = getUiStrings(locale);
 
-const defaultWhatsappMessage = encodeURIComponent(
-  'Olá Luan! Vi seu portfólio e gostaria de conversar sobre um projeto.',
-);
+const defaultWhatsappMessage = encodeURIComponent(ui.contact.whatsappMessage);
 
 const whatsappLink = socialLinks.find(
   (link) =>
@@ -21,11 +22,8 @@ const whatsappLink = socialLinks.find(
     link.url.includes('whatsapp.com'),
 );
 
-const whatsappUrl = whatsappLink
-  ? whatsappLink.url.includes('text=')
-    ? whatsappLink.url
-    : `${whatsappLink.url}${whatsappLink.url.includes('?') ? '&' : '?'}text=${defaultWhatsappMessage}`
-  : `https://wa.me/?text=${defaultWhatsappMessage}`;
+const baseWhatsappUrl = whatsappLink ? whatsappLink.url.split('?')[0] : 'https://wa.me/';
+const whatsappUrl = `${baseWhatsappUrl}?text=${defaultWhatsappMessage}`;
 
 const contactLinks = socialLinks.filter((link) => link.showInContact && link !== whatsappLink);
 ---
@@ -37,14 +35,14 @@ const contactLinks = socialLinks.filter((link) => link.showInContact && link !==
 >
   <div class="container-portfolio grid grid-cols-1 gap-8 lg:grid-cols-[208px_1fr] lg:gap-0">
     <div>
-      <SectionLabel id="heading-contato" label="Contato" />
+      <SectionLabel id="heading-contato" label={ui.contact.label} />
     </div>
 
     <div>
       <p
         class="max-w-[640px] text-[clamp(2rem,3.5vw,3rem)] leading-[1.15] font-medium tracking-[-0.02em] text-fg"
       >
-        Quer tirar uma ideia do papel ou escalar seu produto digital? Vamos conversar.
+        {ui.contact.heading}
       </p>
 
       <div class="mt-8 flex flex-wrap items-center gap-6">
@@ -64,7 +62,7 @@ const contactLinks = socialLinks.filter((link) => link.showInContact && link !==
               d="M12.031 2c-5.516 0-9.999 4.486-9.999 10.002 0 1.766.461 3.489 1.338 5.009L2 22l5.122-1.341a9.963 9.963 0 0 0 4.906 1.292h.004c5.515 0 9.998-4.486 9.998-10.002 0-2.672-1.04-5.185-2.928-7.074A9.935 9.935 0 0 0 12.031 2Zm5.847 14.124c-.246.695-1.434 1.334-2.005 1.419-.522.078-1.204.111-1.943-.123-.449-.143-1.024-.334-1.762-.653-3.101-1.339-5.125-4.462-5.28-4.668-.154-.206-1.26-1.677-1.26-3.199 0-1.522.798-2.27 1.081-2.579.283-.309.618-.386.824-.386.206 0 .412.002.592.011.19.009.445-.072.695.531.257.618.875 2.137.952 2.291.077.155.129.335.026.541-.103.206-.155.335-.309.515-.155.18-.325.402-.464.541-.154.154-.315.321-.135.63.18.309.8 1.32 1.718 2.138 1.18 1.052 2.175 1.378 2.484 1.533.309.154.489.129.669-.078.18-.206.772-.901.978-1.21.206-.309.412-.258.695-.155.283.103 1.802.85 2.111 1.004.309.155.515.232.592.361.077.129.077.747-.169 1.442Z"
             ></path>
           </svg>
-          <span>Chamar no WhatsApp</span>
+          <span>{ui.contact.whatsappButton}</span>
           <span aria-hidden="true" class="text-fg-muted">↗</span>
         </a>
 

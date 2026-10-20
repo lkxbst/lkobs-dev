@@ -1,12 +1,15 @@
 ---
 import SectionLabel from './SectionLabel.astro';
+import { getUiStrings, type Locale } from '../lib/i18n';
 import type { Profile } from '../lib/schema';
 
 interface Props {
   profile: Profile;
+  locale?: Locale;
 }
 
-const { profile } = Astro.props;
+const { profile, locale = 'pt' } = Astro.props;
+const ui = getUiStrings(locale);
 ---
 
 <section
@@ -16,7 +19,7 @@ const { profile } = Astro.props;
 >
   <div class="container-portfolio grid grid-cols-1 gap-8 lg:grid-cols-[420px_1fr] lg:gap-0">
     <div>
-      <SectionLabel id="heading-sobre" label="Sobre" />
+      <SectionLabel id="heading-sobre" label={ui.about.label} />
     </div>
 
     <div>
@@ -31,7 +34,7 @@ const { profile } = Astro.props;
       <div
         class="mt-10 flex flex-col gap-3 border-t border-border pt-6 sm:flex-row sm:items-baseline sm:gap-8"
       >
-        <span class="font-mono text-[12px] text-fg-muted">Ferramentas</span>
+        <span class="font-mono text-[12px] text-fg-muted">{ui.about.toolsLabel}</span>
         <p class="font-mono text-[13px] leading-relaxed text-fg">
           {profile.tools.join(' · ')}
         </p>

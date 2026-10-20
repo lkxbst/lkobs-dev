@@ -1,9 +1,13 @@
 ---
+import { getUiStrings, type Locale } from '../lib/i18n';
+
 interface Props {
   name: string;
+  locale?: Locale;
 }
 
-const { name } = Astro.props;
+const { name, locale = 'pt' } = Astro.props;
+const ui = getUiStrings(locale);
 const currentYear = new Date().getFullYear();
 ---
 
@@ -20,7 +24,8 @@ const currentYear = new Date().getFullYear();
       href="#topo"
       class="font-mono text-[12px] text-fg-muted transition-colors duration-150 hover:text-fg"
     >
-      Voltar ao topo <span aria-hidden="true">↑</span>
+      {ui.footer.backToTop}
+      <span aria-hidden="true">↑</span>
     </a>
   </div>
 </footer>

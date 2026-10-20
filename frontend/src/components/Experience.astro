@@ -2,14 +2,17 @@
 import SectionLabel from './SectionLabel.astro';
 import ExternalLink from './ExternalLink.astro';
 import { formatExperiencePeriod } from '../lib/format';
+import { getUiStrings, type Locale } from '../lib/i18n';
 import type { Experience as ExperienceItem, Profile } from '../lib/schema';
 
 interface Props {
   experiences: ExperienceItem[];
   profile: Profile;
+  locale?: Locale;
 }
 
-const { experiences, profile } = Astro.props;
+const { experiences, profile, locale = 'pt' } = Astro.props;
+const ui = getUiStrings(locale);
 const resumeHref = profile.resumeUrl ?? '/cv';
 ---
 
@@ -20,7 +23,7 @@ const resumeHref = profile.resumeUrl ?? '/cv';
 >
   <div class="container-portfolio grid grid-cols-1 gap-8 lg:grid-cols-[208px_1fr] lg:gap-0">
     <div>
-      <SectionLabel id="heading-experiencia" label="Experiência" />
+      <SectionLabel id="heading-experiencia" label={ui.experience.label} />
     </div>
 
     <div>
@@ -34,7 +37,7 @@ const resumeHref = profile.resumeUrl ?? '/cv';
               ]}
             >
               <div class="font-mono text-[13px] leading-[1.6] text-fg-muted">
-                [{formatExperiencePeriod(exp.startYear, exp.endYear)}]
+                [{formatExperiencePeriod(exp.startYear, exp.endYear, ui.experience.presentLabel)}]
               </div>
 
               <div>
@@ -49,7 +52,7 @@ const resumeHref = profile.resumeUrl ?? '/cv';
       </div>
 
       <div class="mt-6 border-t border-border pt-8 text-[14px]">
-        <ExternalLink href={resumeHref}>Currículo completo (PDF)</ExternalLink>
+        <ExternalLink href={resumeHref}>{ui.experience.fullResumePdf}</ExternalLink>
       </div>
     </div>
   </div>

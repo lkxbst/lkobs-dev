@@ -1,4 +1,6 @@
 ---
+import { getUiStrings, LOCALES, type Locale } from '../lib/i18n';
+
 interface NavItem {
   label: string;
   href: string;
@@ -6,9 +8,11 @@ interface NavItem {
 
 interface Props {
   items: NavItem[];
+  locale?: Locale;
 }
 
-const { items } = Astro.props;
+const { items, locale = 'pt' } = Astro.props;
+const ui = getUiStrings(locale);
 ---
 
 <div class="relative sm:hidden" data-mobile-menu>
@@ -19,7 +23,7 @@ const { items } = Astro.props;
     aria-controls="mobile-nav-panel"
     class="inline-flex h-8 items-center justify-center rounded-full border border-border px-3 font-mono text-[13px] text-fg-muted transition-colors duration-150 hover:border-fg-muted hover:text-fg"
   >
-    Menu
+    {ui.menuLabel}
   </button>
 
   <div
@@ -43,6 +47,29 @@ const { items } = Astro.props;
         ))
       }
     </ul>
+
+    <div
+      class="mt-3 flex items-center justify-center gap-3 border-t border-border pt-3 font-mono text-[12px]"
+      role="group"
+      aria-label={ui.langSwitcherAriaLabel}
+    >
+      {
+        LOCALES.map((loc) => (
+          <a
+            href={loc.href}
+            aria-current={loc.code === locale ? 'page' : undefined}
+            class:list={[
+              'px-1.5 py-0.5 transition-colors duration-150',
+              loc.code === locale
+                ? 'font-medium text-fg underline decoration-accent decoration-2 underline-offset-4'
+                : 'text-fg-muted hover:text-fg',
+            ]}
+          >
+            {loc.label}
+          </a>
+        ))
+      }
+    </div>
   </div>
 </div>
 

@@ -69,6 +69,60 @@ class ProfileForm
                             ->label('Ferramentas')
                             ->required(),
                     ]),
+                Section::make('Tradução — English (EN)')
+                    ->collapsed()
+                    ->columns(2)
+                    ->components([
+                        TextInput::make('translations.en.city')
+                            ->label('City (EN)')
+                            ->maxLength(255),
+                        TextInput::make('translations.en.availabilityLabel')
+                            ->label('Availability Label (EN)')
+                            ->maxLength(255),
+                        Textarea::make('translations.en.headline')
+                            ->label('Headline (EN)')
+                            ->rows(3)
+                            ->columnSpanFull(),
+                        TextInput::make('translations.en.headlineHighlight')
+                            ->label('Headline Highlight (EN)')
+                            ->maxLength(255)
+                            ->columnSpanFull(),
+                        Textarea::make('translations.en.aboutPrimary')
+                            ->label('About — Primary Paragraph (EN)')
+                            ->rows(4)
+                            ->columnSpanFull(),
+                        Textarea::make('translations.en.aboutSecondary')
+                            ->label('About — Secondary Paragraph (EN)')
+                            ->rows(4)
+                            ->columnSpanFull(),
+                    ]),
+                Section::make('Tradução — Español (ES)')
+                    ->collapsed()
+                    ->columns(2)
+                    ->components([
+                        TextInput::make('translations.es.city')
+                            ->label('Ciudad (ES)')
+                            ->maxLength(255),
+                        TextInput::make('translations.es.availabilityLabel')
+                            ->label('Disponibilidad (ES)')
+                            ->maxLength(255),
+                        Textarea::make('translations.es.headline')
+                            ->label('Headline (ES)')
+                            ->rows(3)
+                            ->columnSpanFull(),
+                        TextInput::make('translations.es.headlineHighlight')
+                            ->label('Destaque de Headline (ES)')
+                            ->maxLength(255)
+                            ->columnSpanFull(),
+                        Textarea::make('translations.es.aboutPrimary')
+                            ->label('Sobre mí — Párrafo principal (ES)')
+                            ->rows(4)
+                            ->columnSpanFull(),
+                        Textarea::make('translations.es.aboutSecondary')
+                            ->label('Sobre mí — Párrafo secundario (ES)')
+                            ->rows(4)
+                            ->columnSpanFull(),
+                    ]),
                 Section::make('Currículo (PDF)')
                     ->components([
                         FileUpload::make('resume_path')

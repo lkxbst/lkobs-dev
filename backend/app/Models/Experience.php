@@ -17,6 +17,7 @@ use Illuminate\Support\Carbon;
  * @property int $start_year
  * @property int|null $end_year
  * @property string $impact
+ * @property array<string, array<string, string|null>>|null $translations
  * @property int $sort_order
  * @property bool $is_published
  * @property Carbon|null $created_at
@@ -33,6 +34,7 @@ class Experience extends Model
         'start_year',
         'end_year',
         'impact',
+        'translations',
         'sort_order',
         'is_published',
     ];
@@ -45,6 +47,7 @@ class Experience extends Model
         return [
             'start_year' => 'integer',
             'end_year' => 'integer',
+            'translations' => 'array',
             'sort_order' => 'integer',
             'is_published' => 'boolean',
         ];

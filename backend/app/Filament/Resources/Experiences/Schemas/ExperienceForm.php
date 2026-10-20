@@ -6,6 +6,7 @@ namespace App\Filament\Resources\Experiences\Schemas;
 
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
+use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 
 class ExperienceForm
@@ -47,6 +48,32 @@ class ExperienceForm
                 Toggle::make('is_published')
                     ->label('Publicado')
                     ->default(true),
+                Section::make('Traduções (EN / ES)')
+                    ->collapsed()
+                    ->columns(2)
+                    ->columnSpanFull()
+                    ->components([
+                        TextInput::make('translations.en.role')
+                            ->label('Role (EN)')
+                            ->maxLength(255),
+                        TextInput::make('translations.en.company')
+                            ->label('Company (EN)')
+                            ->maxLength(255),
+                        TextInput::make('translations.en.impact')
+                            ->label('Impact (EN)')
+                            ->maxLength(255)
+                            ->columnSpanFull(),
+                        TextInput::make('translations.es.role')
+                            ->label('Cargo (ES)')
+                            ->maxLength(255),
+                        TextInput::make('translations.es.company')
+                            ->label('Empresa (ES)')
+                            ->maxLength(255),
+                        TextInput::make('translations.es.impact')
+                            ->label('Impacto (ES)')
+                            ->maxLength(255)
+                            ->columnSpanFull(),
+                    ]),
             ]);
     }
 }

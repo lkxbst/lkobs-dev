@@ -1,9 +1,11 @@
 ---
 import '../styles/global.css';
+import { getUiStrings, LOCALES, type Locale } from '../lib/i18n';
 
 interface Props {
   title: string;
   description: string;
+  locale?: Locale;
   canonicalUrl?: string;
   ogImageUrl?: string;
   jsonLd?: Record<string, unknown>;
@@ -12,14 +14,18 @@ interface Props {
 const {
   title,
   description,
+  locale = 'pt',
   canonicalUrl = new URL(Astro.url.pathname, Astro.site || 'https://luankobs.dev').toString(),
   ogImageUrl = new URL('/og.png', Astro.site || 'https://luankobs.dev').toString(),
   jsonLd,
 } = Astro.props;
+
+const ui = getUiStrings(locale);
+const siteOrigin = Astro.site || 'https://luankobs.dev';
 ---
 
 <!doctype html>
-<html lang="pt-BR" data-theme="dark">
+<html lang={ui.htmlLang} data-theme="dark">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -43,11 +49,21 @@ const {
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonicalUrl} />
+    {
+      LOCALES.map((loc) => (
+        <link
+          rel="alternate"
+          hreflang={loc.hreflang}
+          href={new URL(loc.href, siteOrigin).toString()}
+        />
+      ))
+    }
+    <link rel="alternate" hreflang="x-default" href={new URL('/', siteOrigin).toString()} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" type="image/png" href="/favicon.png" />
 
     <meta property="og:type" content="website" />
-    <meta property="og:locale" content="pt_BR" />
+    <meta property="og:locale" content={ui.ogLocale} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonicalUrl} />
@@ -67,7 +83,7 @@ const {
       href="#conteudo-principal"
       class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:rounded focus:bg-surface focus:px-4 focus:py-2 focus:font-mono focus:text-sm focus:text-fg"
     >
-      Pular para o conteúdo
+      {ui.skipToContent}
     </a>
     <slot />
   </body>

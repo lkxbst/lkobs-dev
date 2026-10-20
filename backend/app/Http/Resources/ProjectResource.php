@@ -48,6 +48,10 @@ class ProjectResource extends JsonResource
             'liveUrl' => $this->live_url,
             'repoUrl' => $this->repo_url,
             'image' => $image,
+            'translations' => [
+                'en' => (object) ($this->translations['en'] ?? []),
+                'es' => (object) ($this->translations['es'] ?? []),
+            ],
         ];
     }
 }

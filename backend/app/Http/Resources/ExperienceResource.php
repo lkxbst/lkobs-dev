@@ -24,6 +24,10 @@ class ExperienceResource extends JsonResource
             'startYear' => (int) $this->start_year,
             'endYear' => $this->end_year !== null ? (int) $this->end_year : null,
             'impact' => $this->impact,
+            'translations' => [
+                'en' => (object) ($this->translations['en'] ?? []),
+                'es' => (object) ($this->translations['es'] ?? []),
+            ],
         ];
     }
 }
