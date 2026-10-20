@@ -1,6 +1,6 @@
-# luan.kobs — Portfólio Pessoal (`luankobs.dev`)
+# Portfólio Pessoal (`luankobs.dev`)
 
-Monorepo do portfólio pessoal de **Luan Kobs**, dividido entre uma API administrativa em **Laravel 12 + Filament 4 (PHP 8.2)** e um site estático em **Astro + Tailwind CSS v4 + TypeScript**.
+Monorepo do meu portfólio pessoal, dividido entre uma API administrativa em **Laravel 12 + Filament 4 (PHP 8.2)** e um site estático em **Astro + Tailwind CSS v4 + TypeScript**.
 
 ## Arquitetura
 
