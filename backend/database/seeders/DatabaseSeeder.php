@@ -30,8 +30,8 @@ class DatabaseSeeder extends Seeder
             'headline_highlight' => 'código simples e decisões bem explicadas.',
             'is_available' => true,
             'availability_label' => 'Disponível para novos projetos',
-            'about_primary' => 'Sou desenvolvedor há [X] anos e gosto de trabalhar no meio do caminho entre produto e engenharia: entender o problema, propor a solução mais simples que resolva e cuidar dos detalhes na entrega.',
-            'about_secondary' => 'Hoje sou [cargo] na [empresa], onde [o que você faz no dia a dia]. Fora do trabalho, [um interesse pessoal real, como um projeto open source ou um hobby].',
+            'about_primary' => 'Sou desenvolvedor há [X] anos e trabalho no meio do caminho entre produto e engenharia: entender o problema do negócio, propor a solução mais eficiente que resolva e cuidar de cada detalhe na entrega.',
+            'about_secondary' => 'Desenvolvo sistemas sob medida, plataformas SaaS, automações inteligentes e integrações com IA para empresas que precisam ganhar escala, velocidade e eficiência operacional.',
             'tools' => ['TypeScript', 'React', 'Node.js', 'PostgreSQL', 'Docker'],
             'email' => '[seu@email.com]',
             'resume_path' => null,
@@ -54,8 +54,8 @@ class DatabaseSeeder extends Seeder
         ]);
 
         SocialLink::query()->create([
-            'label' => '[Outro link]',
-            'url' => 'https://example.com',
+            'label' => 'WhatsApp',
+            'url' => 'https://wa.me/5500000000000?text=Ol%C3%A1%20Luan!%20Vi%20seu%20portf%C3%B3lio%20e%20gostaria%20de%20conversar%20sobre%20um%20projeto.',
             'show_in_hero' => false,
             'show_in_contact' => true,
             'sort_order' => 3,
