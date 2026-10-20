@@ -16,44 +16,63 @@ const heroLinks = socialLinks.filter((link) => link.showInHero && isFilledText(l
 const { before, highlight, after } = splitHeadline(profile.headline, profile.headlineHighlight);
 ---
 
-<section aria-label={ui.hero.ariaLabel} class="pt-24 pb-20 lg:pt-40 lg:pb-36">
-  <div class="container-portfolio">
-    {
-      profile.isAvailable && isFilledText(profile.availabilityLabel) && (
-        <div class="mb-6 flex items-center gap-2.5 font-mono text-[12px] text-fg-muted">
-          <span
-            aria-hidden="true"
-            class="inline-block h-1.5 w-1.5 rounded-full bg-accent motion-safe:animate-pulse"
-          />
-          <span>{profile.availabilityLabel}</span>
-        </div>
-      )
-    }
+<section aria-label={ui.hero.ariaLabel} class="pt-20 pb-0 lg:pt-28 lg:pb-0">
+  <div
+    class="container-portfolio grid grid-cols-1 items-end gap-y-10 lg:grid-cols-[minmax(0,1fr)_auto] lg:gap-x-12 lg:gap-y-0"
+  >
+    <div class="lg:self-center lg:pb-10">
+      {
+        profile.isAvailable && isFilledText(profile.availabilityLabel) && (
+          <div class="mb-6 flex items-center gap-2.5 font-mono text-[12px] text-fg-muted">
+            <span
+              aria-hidden="true"
+              class="inline-block h-1.5 w-1.5 rounded-full bg-accent motion-safe:animate-pulse"
+            />
+            <span>{profile.availabilityLabel}</span>
+          </div>
+        )
+      }
 
-    <h1 class="text-[clamp(3.5rem,7vw,6rem)] leading-none font-medium tracking-[-0.03em] text-fg">
-      {profile.name}
-    </h1>
+      <h1 class="text-[clamp(3.5rem,7vw,6rem)] leading-none font-medium tracking-[-0.03em] text-fg">
+        {profile.name}
+      </h1>
 
-    {
-      isFilledText(profile.headline) && (
-        <p class="mt-8 max-w-[730px] text-[clamp(1.25rem,2.2vw,1.75rem)] leading-[1.4] font-normal text-fg-muted">
-          {before}
-          {highlight && <span class="text-fg">{highlight}</span>}
-          {after}
-        </p>
-      )
-    }
+      {
+        isFilledText(profile.headline) && (
+          <p class="mt-8 max-w-[730px] text-[clamp(1.25rem,2.2vw,1.75rem)] leading-[1.4] font-normal text-fg-muted">
+            {before}
+            {highlight && <span class="text-fg">{highlight}</span>}
+            {after}
+          </p>
+        )
+      }
 
-    {
-      heroLinks.length > 0 && (
-        <ul class="mt-10 flex flex-wrap items-center gap-7 text-[14px]">
-          {heroLinks.map((link) => (
-            <li>
-              <ExternalLink href={link.url}>{link.label}</ExternalLink>
-            </li>
-          ))}
-        </ul>
-      )
-    }
+      {
+        heroLinks.length > 0 && (
+          <ul class="mt-10 flex flex-wrap items-center gap-7 text-[14px]">
+            {heroLinks.map((link) => (
+              <li>
+                <ExternalLink href={link.url}>{link.label}</ExternalLink>
+              </li>
+            ))}
+          </ul>
+        )
+      }
+    </div>
+
+    <picture class="block self-end justify-self-start leading-none lg:justify-self-end">
+      <source srcset="/images/luan-kobs.webp" type="image/webp" width="880" height="1094" />
+      <img
+        src="/images/luan-kobs.png"
+        alt="Luan Kobs"
+        width="957"
+        height="1190"
+        loading="eager"
+        fetchpriority="high"
+        decoding="async"
+        draggable="false"
+        class="pointer-events-none block h-[clamp(320px,80vw,420px)] w-auto max-w-full object-contain object-bottom select-none lg:h-[clamp(420px,38vw,560px)]"
+      />
+    </picture>
   </div>
 </section>

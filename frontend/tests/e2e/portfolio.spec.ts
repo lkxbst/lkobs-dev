@@ -2,11 +2,11 @@ import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
 
 test.describe('Portfolio UI, Responsive, Keyboard & Accessibility Checks', () => {
-  test('aligns section grids, omits experience/resume, applies Grafite quente palette, and has no horizontal overflow at 1440px, 1024px, and 375px in both themes', async ({
+  test('verifies hero photo, section grids, Grafite quente palette, and layout across 1440px, 1280px, 1024px, 768px, and 375px in both themes', async ({
     page,
   }) => {
-    for (const width of [1440, 1024, 375]) {
-      const height = width === 375 ? 812 : 900;
+    for (const width of [1440, 1280, 1024, 768, 375]) {
+      const height = width < 768 ? 812 : 900;
       await page.setViewportSize({ width, height });
       await page.goto('/');
 
@@ -16,6 +16,32 @@ test.describe('Portfolio UI, Responsive, Keyboard & Accessibility Checks', () =>
       await expect(page.locator('a[href="/cv"]')).toHaveCount(0);
       await expect(page.locator('#projetos')).toBeVisible();
       await expect(page.locator('#contato')).toBeVisible();
+
+      // Verify hero photo attributes and styles
+      const heroPicture = page.locator('main section picture').first();
+      const heroSource = heroPicture.locator('source[type="image/webp"]');
+      const heroImg = heroPicture.locator('img[alt="Luan Kobs"]');
+
+      await expect(heroSource).toHaveAttribute('srcset', '/images/luan-kobs.webp');
+      await expect(heroImg).toBeVisible();
+      await expect(heroImg).toHaveAttribute('src', '/images/luan-kobs.png');
+      await expect(heroImg).toHaveAttribute('width', '957');
+      await expect(heroImg).toHaveAttribute('height', '1190');
+      await expect(heroImg).toHaveAttribute('loading', 'eager');
+      await expect(heroImg).toHaveAttribute('fetchpriority', 'high');
+      await expect(heroImg).toHaveAttribute('decoding', 'async');
+
+      const heroImgStyles = await heroImg.evaluate((el) => {
+        const cs = getComputedStyle(el);
+        return {
+          userSelect: cs.userSelect,
+          pointerEvents: cs.pointerEvents,
+          naturalWidth: (el as HTMLImageElement).naturalWidth,
+        };
+      });
+      expect(heroImgStyles.userSelect).toBe('none');
+      expect(heroImgStyles.pointerEvents).toBe('none');
+      expect(heroImgStyles.naturalWidth).toBeGreaterThan(0);
 
       // Verify theme-color meta tags
       await expect(
@@ -30,6 +56,36 @@ test.describe('Portfolio UI, Responsive, Keyboard & Accessibility Checks', () =>
       expect(mainText).not.toMatch(
         /\[(sua cidade|X|Cargo|Empresa|Nome do projeto|seu@email\.com|React)\]/,
       );
+
+      // Verify hero layout and base of photo resting on the #sobre top border line
+      const heroTextBox = await page
+        .locator('main > section:first-child > .container-portfolio > div:first-child')
+        .boundingBox();
+      const heroImgBox = await heroImg.boundingBox();
+      const sobreBox = await page.locator('#sobre').boundingBox();
+
+      expect(heroTextBox).not.toBeNull();
+      expect(heroImgBox).not.toBeNull();
+      expect(sobreBox).not.toBeNull();
+
+      if (heroTextBox && heroImgBox && sobreBox) {
+        // Base of the photo must touch the exact top border of #sobre without gap or crop
+        expect(Math.abs(heroImgBox.y + heroImgBox.height - sobreBox.y)).toBeLessThanOrEqual(1);
+
+        if (width >= 1024) {
+          // Two columns: text on left, photo on right, >= 48px horizontal gap
+          const horizontalGap = heroImgBox.x - (heroTextBox.x + heroTextBox.width);
+          expect(horizontalGap).toBeGreaterThanOrEqual(48);
+          expect(heroImgBox.height).toBeGreaterThanOrEqual(420);
+          expect(heroImgBox.height).toBeLessThanOrEqual(560);
+        } else {
+          // Single column (< 1024px): text above photo, photo aligned to left like text
+          expect(heroImgBox.y).toBeGreaterThanOrEqual(heroTextBox.y + heroTextBox.height);
+          expect(Math.abs(heroImgBox.x - heroTextBox.x)).toBeLessThanOrEqual(1);
+          expect(heroImgBox.height).toBeGreaterThanOrEqual(320);
+          expect(heroImgBox.height).toBeLessThanOrEqual(420);
+        }
+      }
 
       // Verify all visible sections' content columns start at the exact same x coordinate on desktop (>= 1024px)
       if (width >= 1024) {
@@ -67,7 +123,7 @@ test.describe('Portfolio UI, Responsive, Keyboard & Accessibility Checks', () =>
         expect(langBtnBox?.height).toBeGreaterThanOrEqual(32);
         expect(themeBtnBox?.height).toBe(36);
         expect(themeBtnBox?.width).toBe(36);
-      } else {
+      } else if (width < 640) {
         // Mobile (375px) click targets >= 44px
         const menuBtnBox = await page.locator('[data-mobile-menu-button]').boundingBox();
         const themeBtnBox = await page.locator('[data-theme-toggle]').boundingBox();
@@ -81,6 +137,15 @@ test.describe('Portfolio UI, Responsive, Keyboard & Accessibility Checks', () =>
           await page.locator('[data-theme-toggle]').click();
         }
         await expect(page.locator('html')).toHaveAttribute('data-theme', theme);
+
+        // Confirm photo base remains exactly on the #sobre divider line in both themes
+        const themeImgBox = await heroImg.boundingBox();
+        const themeSobreBox = await page.locator('#sobre').boundingBox();
+        if (themeImgBox && themeSobreBox) {
+          expect(
+            Math.abs(themeImgBox.y + themeImgBox.height - themeSobreBox.y),
+          ).toBeLessThanOrEqual(1);
+        }
 
         // Verify CSS token values and body background color
         const tokens = await page.evaluate(() => {
